@@ -165,10 +165,14 @@ export interface Attempt {
 
 export type SessionMode = "QUICK" | "STANDARD" | "DEEP";
 
+/** Tipo de sesión: qué hace el alumno y cómo puntúa. */
+export type SessionType = "conceptos" | "practica" | "repaso" | "resolver" | "tranquilo";
+
 export interface DailySession {
   id: string;
   date: string; // YYYY-MM-DD
   mode: SessionMode;
+  sessionType: SessionType;
   conceptId: string;
   xpEarned: number;
   correctCount: number;

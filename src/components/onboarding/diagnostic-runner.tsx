@@ -8,8 +8,10 @@ import { cn } from "@/lib/utils";
 
 export function DiagnosticRunner({
   onComplete,
+  onSkip,
 }: {
   onComplete: (answers: Record<string, string>) => void;
+  onSkip?: () => void;
 }) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -44,9 +46,18 @@ export function DiagnosticRunner({
             style={{ width: `${(index / total) * 100}%` }}
           />
         </div>
-        <span className="text-xs text-ink-muted nums">
+        <span className="text-xs font-bold text-ink-muted nums">
           {index + 1}/{total}
         </span>
+        {onSkip && (
+          <button
+            type="button"
+            onClick={onSkip}
+            className="text-xs font-bold text-ink-muted underline-offset-2 hover:text-ink hover:underline"
+          >
+            Saltar
+          </button>
+        )}
       </div>
 
       <Reveal key={q.id}>

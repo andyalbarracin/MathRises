@@ -1,22 +1,30 @@
 "use client";
 
 import { BookOpen, Sparkles } from "lucide-react";
-import { fraccionesLesson } from "@/content/fractions";
-import { MENTORS } from "@/content/mentors";
+import type { LessonContent } from "@/content/fractions";
+import { MENTORS, type MentorSlug } from "@/content/mentors";
 import { MentorAvatar } from "@/components/mentors/mentor-avatar";
 import { Button } from "@/components/ui/button";
 import { Katex } from "@/components/math/katex";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/motion/reveal";
 
-export function ExplanationCard({ onContinue }: { onContinue: () => void }) {
-  const { explanation } = fraccionesLesson;
-  const mentor = MENTORS[explanation.mentor as keyof typeof MENTORS];
+export function ExplanationCard({
+  lesson,
+  onContinue,
+}: {
+  lesson: LessonContent;
+  onContinue: () => void;
+}) {
+  const { explanation } = lesson;
+  const slug = explanation.mentor as MentorSlug;
+  const mentor = MENTORS[slug];
   return (
-    <div>
+    <Reveal stagger>
       <Badge tone="accent" className="mb-4">
         <BookOpen className="h-3.5 w-3.5" /> Concepto
       </Badge>
-      <h2 className="font-display text-xl text-ink">{explanation.title}</h2>
+      <h2 className="font-display text-2xl text-ink">{explanation.title}</h2>
       <div className="mt-4 space-y-3">
         {explanation.body.map((p, i) => (
           <p key={i} className="text-[15px] leading-relaxed text-ink-muted">
@@ -25,35 +33,43 @@ export function ExplanationCard({ onContinue }: { onContinue: () => void }) {
         ))}
       </div>
       {mentor && (
-        <div className="mt-5 flex items-center gap-3 rounded-lg border border-border bg-surface-2/50 p-3">
-          <MentorAvatar slug={mentor.slug} size={36} />
-          <p className="text-xs text-ink-muted">
-            Te acompaña <span className="font-medium text-ink">{mentor.name}</span> — {mentor.role}
+        <div className="mt-5 flex items-center gap-3 rounded-2xl bg-surface-2/70 p-3">
+          <MentorAvatar slug={slug} size={44} />
+          <p className="text-sm text-ink-muted">
+            Te acompaña <span className="font-bold text-ink">{mentor.name}</span>
           </p>
         </div>
       )}
-      <div className="mt-6 flex justify-end">
-        <Button onClick={onContinue}>Entendido</Button>
-      </div>
-    </div>
+      <Button size="lg" className="mt-6 w-full" onClick={onContinue}>
+        Entendido
+      </Button>
+    </Reveal>
   );
 }
 
-export function WorkedExampleCard({ onContinue }: { onContinue: () => void }) {
-  const { workedExample } = fraccionesLesson;
+export function WorkedExampleCard({
+  lesson,
+  onContinue,
+  lastStep,
+}: {
+  lesson: LessonContent;
+  onContinue: () => void;
+  lastStep?: boolean;
+}) {
+  const { workedExample } = lesson;
   return (
-    <div>
+    <Reveal stagger>
       <Badge tone="accent" className="mb-4">
         <Sparkles className="h-3.5 w-3.5" /> Ejemplo resuelto
       </Badge>
-      <h2 className="font-display text-xl text-ink">{workedExample.title}</h2>
-      <div className="mt-4 rounded-xl border border-border bg-surface-2/50 px-5 py-5 text-center">
-        <Katex expr={workedExample.problemLatex} display className="text-xl" />
+      <h2 className="font-display text-2xl text-ink">{workedExample.title}</h2>
+      <div className="mt-4 grid place-items-center rounded-3xl border border-border bg-surface px-5 py-6 text-center shadow-card">
+        <Katex expr={workedExample.problemLatex} display className="text-2xl" />
       </div>
       <ol className="mt-5 space-y-3">
         {workedExample.steps.map((s, i) => (
           <li key={i} className="flex gap-3">
-            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-border text-xs text-ink-muted">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent-soft text-xs font-bold text-accent">
               {i + 1}
             </span>
             <div>
@@ -63,9 +79,9 @@ export function WorkedExampleCard({ onContinue }: { onContinue: () => void }) {
           </li>
         ))}
       </ol>
-      <div className="mt-6 flex justify-end">
-        <Button onClick={onContinue}>A practicar</Button>
-      </div>
-    </div>
+      <Button size="lg" className="mt-6 w-full" onClick={onContinue}>
+        {lastStep ? "Listo" : "A practicar"}
+      </Button>
+    </Reveal>
   );
 }

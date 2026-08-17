@@ -3,18 +3,20 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Flame, Zap, Target, ChevronRight, RefreshCw, BookOpen } from "lucide-react";
+import { Zap, ChevronRight } from "lucide-react";
 import { repository } from "@/data/local/repository";
 import { getDueReviews } from "@/domain/spaced-repetition";
-import { levelName, levelProgress } from "@/domain/xp";
+import { levelName } from "@/domain/xp";
 import type { ConceptMastery, ReviewSchedule, UserProgress } from "@/domain/types";
-import { ROADMAP } from "@/content/roadmap";
-import { FRACCIONES_CONCEPT_ID } from "@/content/fractions";
+import { ROADMAP, TARGET_DATE } from "@/content/roadmap";
+import { PLAYABLE, PLAYABLE_ORDER } from "@/content/concepts";
+import { SESSION_TYPES, SESSION_TYPE_ORDER } from "@/content/session-types";
 import { daysUntil } from "@/lib/date";
-import { TARGET_DATE } from "@/content/roadmap";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Progress, ProgressRing } from "@/components/ui/progress";
+import { Tile } from "@/components/ui/tile";
 import { Badge } from "@/components/ui/badge";
+import { Mascot } from "@/components/art/mascot";
+import { Flame } from "@/components/art/scenes";
 
 interface State {
   progress: UserProgress;
@@ -52,12 +54,7 @@ export function TodayView() {
         repository.getProfile(),
       ]);
       if (!alive) return;
-      setState({
-        progress,
-        masteries,
-        dueReviews: getDueReviews(reviews),
-        name: profile?.name ?? "",
-      });
+      setState({ progress, masteries, dueReviews: getDueReviews(reviews), name: profile?.name ?? "" });
     })();
     return () => {
       alive = false;
@@ -65,35 +62,34 @@ export function TodayView() {
   }, [router]);
 
   if (!state) {
-    return <div className="h-40 animate-pulse rounded-2xl border border-border bg-surface/50" />;
+    return <div className="mx-auto h-64 max-w-3xl animate-pulse rounded-3xl bg-surface-2/60" />;
   }
 
   const { progress, masteries, dueReviews, name } = state;
   const firstName = name.split(" ")[0];
-  const fracMastery = masteries.find((m) => m.conceptId === FRACCIONES_CONCEPT_ID);
-  const fracLevel = fracMastery?.level ?? 0;
+  const levelOf = (id: string) => masteries.find((m) => m.conceptId === id)?.level ?? 0;
+
   const sumLevels = masteries.reduce((a, m) => a + m.level, 0);
   const readiness = Math.round((sumLevels / (5 * TOTAL_NODES)) * 100);
-  const lp = levelProgress(progress.xp);
   const days = daysUntil(TARGET_DATE);
-  const isNewConcept = fracLevel === 0;
+
+  // Concepto actual: el primero jugable sin dominar.
+  const currentId =
+    PLAYABLE_ORDER.find((id) => levelOf(id) < (PLAYABLE[id]?.concept.masteryRequired ?? 4)) ??
+    PLAYABLE_ORDER[PLAYABLE_ORDER.length - 1];
+  const current = PLAYABLE[currentId];
 
   return (
     <div className="mx-auto max-w-3xl">
       {/* Encabezado */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-display text-2xl tracking-tight text-ink md:text-3xl">
-            {greeting()}
-            {firstName ? `, ${firstName}` : ""}
-          </h1>
-          <p className="mt-1 text-sm text-ink-muted">
-            Faltan <span className="text-ink nums">{days}</span> días para el ingreso · UNLaM 2027
-          </p>
-        </div>
+        <h1 className="font-display text-2xl text-ink md:text-3xl">
+          {greeting()}
+          {firstName ? `, ${firstName}` : ""} 👋
+        </h1>
         <div className="flex items-center gap-2">
-          <Badge tone={progress.streak > 0 ? "warn" : "neutral"}>
-            <Flame className="h-3.5 w-3.5" />
+          <Badge tone="streak">
+            <Flame size={15} active={progress.streak > 0} />
             {progress.streak} {progress.streak === 1 ? "día" : "días"}
           </Badge>
           <Badge tone="accent">
@@ -103,81 +99,86 @@ export function TodayView() {
         </div>
       </div>
 
-      {/* Readiness */}
-      <div className="mt-6 rounded-2xl border border-border bg-surface p-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-ink-muted">
-              Preparación para el ingreso
+      {/* Hero */}
+      <div className="mt-5 overflow-hidden rounded-3xl border border-border bg-accent-soft p-5 shadow-card sm:p-6">
+        <div className="flex items-center gap-5">
+          <ProgressRing value={readiness} size={104} stroke={11}>
+            <div>
+              <p className="font-display text-2xl text-ink nums">{readiness}%</p>
+              <p className="-mt-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                listo
+              </p>
+            </div>
+          </ProgressRing>
+          <div className="min-w-0 flex-1">
+            <p className="font-display text-lg text-ink">
+              {readiness < 20 ? "¡Arranquemos el camino!" : "¡Vas muy bien!"}
             </p>
-            <p className="mt-1 font-display text-4xl text-ink nums">{readiness}%</p>
+            <p className="mt-1 text-sm text-ink-muted">
+              Nivel {progress.level} · {levelName(progress.level)}. Faltan{" "}
+              <span className="font-bold text-ink nums">{days}</span> días para el ingreso.
+            </p>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-ink">Nivel {progress.level}</p>
-            <p className="text-xs text-ink-muted">{levelName(progress.level)}</p>
+          <div className="hidden shrink-0 sm:block">
+            <Mascot tone="violet" expression="cheer" symbol="+" size={92} />
           </div>
-        </div>
-        <Progress value={lp.pct * 100} className="mt-4" />
-        <p className="mt-2 text-xs text-ink-muted">
-          {lp.toNext} XP para el próximo nivel · indicador motivacional, no es una predicción
-          oficial.
-        </p>
-      </div>
-
-      {/* Plan de hoy */}
-      <div className="mt-5 rounded-2xl border border-border bg-surface p-5">
-        <div className="flex items-center justify-between">
-          <p className="font-medium text-ink">Tu sesión de hoy</p>
-          <span className="text-sm text-ink-muted">~15–20 min</span>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-muted">
-          <span className="flex items-center gap-1.5">
-            <RefreshCw className="h-4 w-4 text-accent-2" />
-            {dueReviews.length} repasos
-          </span>
-          <span className="flex items-center gap-1.5">
-            <BookOpen className="h-4 w-4 text-accent" />
-            {isNewConcept ? "1 concepto nuevo" : "Fracciones (en progreso)"}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Target className="h-4 w-4 text-ink-muted" />6 ejercicios
-          </span>
-        </div>
-
-        <Button asChild size="lg" className="mt-5 w-full sm:w-auto">
-          <Link href="/sesion?mode=STANDARD">
-            Comenzar sesión
-            <ChevronRight className="h-5 w-5" />
-          </Link>
-        </Button>
-
-        <div className="mt-3 flex gap-2 text-xs">
-          <Link href="/sesion?mode=QUICK" className="text-ink-muted underline-offset-2 hover:text-ink hover:underline">
-            Rápida (10 min)
-          </Link>
-          <span className="text-border">·</span>
-          <Link href="/sesion?mode=DEEP" className="text-ink-muted underline-offset-2 hover:text-ink hover:underline">
-            Profunda (35 min)
-          </Link>
         </div>
       </div>
 
-      {/* Posición en el roadmap */}
-      <div className="mt-5 rounded-2xl border border-border bg-surface p-5">
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-ink-muted">Estás en</p>
-          <Link href="/roadmap" className="text-sm text-accent hover:underline">
-            Ver roadmap
+      {/* Tipos de sesión */}
+      <section className="mt-7">
+        <div className="mb-3 flex items-baseline justify-between">
+          <h2 className="font-display text-lg text-ink">¿Cómo querés estudiar hoy?</h2>
+          <Link href="/roadmap" className="text-sm font-bold text-accent hover:underline">
+            Ver camino
           </Link>
         </div>
-        <p className="mt-1 font-medium text-ink">Fundamentos · Fracciones</p>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {SESSION_TYPE_ORDER.map((t) => {
+            const info = SESSION_TYPES[t];
+            const Icon = info.icon;
+            const dueCount = t === "repaso" ? dueReviews.length : null;
+            return (
+              <Link
+                key={t}
+                href={`/sesion?concept=${currentId}&type=${t}`}
+                className="group flex items-center gap-4 rounded-3xl border border-border bg-surface p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/40"
+              >
+                <Tile icon={Icon} tone={info.tone} size={54} />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="font-display text-[17px] text-ink">{info.label}</p>
+                    {dueCount != null && dueCount > 0 && (
+                      <Badge tone="warn">{dueCount}</Badge>
+                    )}
+                  </div>
+                  <p className="mt-0.5 line-clamp-2 text-sm text-ink-muted">{info.blurb}</p>
+                  <p className="mt-1 text-xs font-semibold text-ink-muted">{info.minutes}</p>
+                </div>
+                <ChevronRight className="h-5 w-5 shrink-0 text-ink-muted transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Camino actual */}
+      <section className="mt-7 rounded-3xl border border-border bg-surface p-5 shadow-card">
+        <div className="flex items-center gap-3">
+          <Tile icon={current.icon} tone={current.tone} size={46} />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm text-ink-muted">Estás en</p>
+            <p className="font-display text-[17px] text-ink">{current.concept.title}</p>
+          </div>
+        </div>
         <div className="mt-3 flex items-center gap-3">
-          <Progress value={(fracLevel / 5) * 100} />
-          <span className="w-10 shrink-0 text-right text-sm text-ink-muted nums">
-            {Math.round((fracLevel / 5) * 100)}%
+          <Progress value={(levelOf(currentId) / 5) * 100} />
+          <span className="w-10 shrink-0 text-right text-sm font-bold text-ink-muted nums">
+            {Math.round((levelOf(currentId) / 5) * 100)}%
           </span>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

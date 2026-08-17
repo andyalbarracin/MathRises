@@ -24,8 +24,8 @@ export const ROADMAP: RoadmapSection[] = [
     module: "FUNDAMENTOS",
     title: "Fundamentos",
     nodes: [
-      { conceptId: "enteros-signos", title: "Enteros y signos", targetWeek: 1, playable: false },
-      { conceptId: "orden-operaciones", title: "Orden de operaciones", targetWeek: 1, playable: false },
+      { conceptId: "enteros-signos", title: "Enteros y signos", targetWeek: 1, playable: true },
+      { conceptId: "orden-operaciones", title: "Orden de operaciones", targetWeek: 1, playable: true },
       { conceptId: FRACCIONES_CONCEPT_ID, title: "Fracciones", targetWeek: 1, playable: true },
       { conceptId: "potencias-radicales", title: "Potencias y radicales", targetWeek: 2, playable: false },
       { conceptId: "porcentajes-proporciones", title: "Porcentajes y proporciones", targetWeek: 2, playable: false },

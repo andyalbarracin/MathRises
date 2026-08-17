@@ -14,7 +14,7 @@ function useIsDark() {
   return useSyncExternalStore(
     subscribe,
     () => document.documentElement.classList.contains("dark"),
-    () => true, // en el servidor asumimos dark (dark-first)
+    () => false, // en el servidor asumimos light (light-first)
   );
 }
 

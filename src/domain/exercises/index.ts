@@ -1,13 +1,17 @@
 import { createRng, seedFromString } from "@/lib/rng";
 import { fractionTemplates } from "./fractions";
+import { integerTemplates } from "./integers";
+import { orderOpsTemplates } from "./order-ops";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
 export { fractionTemplates } from "./fractions";
 
+const ALL_TEMPLATES = [...fractionTemplates, ...integerTemplates, ...orderOpsTemplates];
+
 /** Todos los templates registrados, indexados por id. */
 export const TEMPLATES: Record<string, ExerciseTemplate> = Object.fromEntries(
-  fractionTemplates.map((t) => [t.id, t]),
+  ALL_TEMPLATES.map((t) => [t.id, t]),
 );
 
 export function templatesForConcept(conceptId: string): ExerciseTemplate[] {

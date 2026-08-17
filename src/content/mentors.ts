@@ -1,28 +1,30 @@
+import type { Tone } from "@/components/art/mascot";
+
 export type MentorSlug = "vector" | "delta" | "sigma" | "atlas" | "morgan";
 
 export interface Mentor {
   slug: MentorSlug;
   name: string;
   role: string;
-  /** Color de acento del avatar (token CSS). */
-  accent: "accent" | "accent-2" | "success" | "warn";
+  tone: Tone;
+  symbol: string;
 }
 
 export const MENTORS: Record<MentorSlug, Mentor> = {
-  vector: { slug: "vector", name: "Vector", role: "Ingeniero pragmático", accent: "accent" },
-  delta: { slug: "delta", name: "Delta", role: "Especialista en geometría", accent: "accent-2" },
-  sigma: { slug: "sigma", name: "Sigma", role: "Mentora analítica", accent: "success" },
-  atlas: { slug: "atlas", name: "Atlas", role: "Operaciones industriales", accent: "warn" },
-  morgan: { slug: "morgan", name: "Morgan", role: "Negocios y finanzas", accent: "accent" },
+  vector: { slug: "vector", name: "Vector", role: "Ingeniero pragmático", tone: "blue", symbol: "x" },
+  delta: { slug: "delta", name: "Delta", role: "Especialista en geometría", tone: "coral", symbol: "Δ" },
+  sigma: { slug: "sigma", name: "Sigma", role: "Mentora analítica", tone: "violet", symbol: "Σ" },
+  atlas: { slug: "atlas", name: "Atlas", role: "Operaciones industriales", tone: "amber", symbol: "%" },
+  morgan: { slug: "morgan", name: "Morgan", role: "Negocios y finanzas", tone: "green", symbol: "$" },
 };
 
-/** Mensajes de cierre según el desempeño (concisos, sin épica hueca). */
+/** Mensajes de cierre según el desempeño (concisos, cálidos, sin épica hueca). */
 export function mentorClosing(accuracy: number): { mentor: MentorSlug; message: string } {
   if (accuracy >= 0.9) {
     return {
       mentor: "sigma",
       message:
-        "Sólido. Cuando algo sale bien varias veces seguidas, el sistema lo agenda más espaciado. Volvemos a verlo en unos días.",
+        "¡Muy sólido! Cuando algo sale bien varias veces seguidas, lo agendo más espaciado. Nos vemos en unos días con esto.",
     };
   }
   if (accuracy >= 0.6) {
@@ -35,6 +37,6 @@ export function mentorClosing(accuracy: number): { mentor: MentorSlug; message: 
   return {
     mentor: "sigma",
     message:
-      "Costó, y está bien: así aprende el cerebro. Programé repaso corto de lo que falló para reforzarlo mañana.",
+      "Costó, y está perfecto: así aprende el cerebro. Te programé un repaso corto para reforzarlo mañana.",
   };
 }

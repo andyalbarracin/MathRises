@@ -37,8 +37,8 @@ function isActive(pathname: string, href: string) {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // La sesión corre a pantalla completa, sin cromo de navegación.
-  const immersive = pathname.startsWith("/sesion");
+  // La sesión y el onboarding corren a pantalla completa, sin cromo de navegación.
+  const immersive = pathname.startsWith("/sesion") || pathname.startsWith("/onboarding");
   if (immersive) return <>{children}</>;
 
   return (

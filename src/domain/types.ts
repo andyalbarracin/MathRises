@@ -193,4 +193,19 @@ export interface UserProgress {
   lastActiveDate: string | null; // YYYY-MM-DD
   weeklyGoalMinutes: number;
   weeklyProgressMinutes: number;
+  onboardingComplete: boolean;
+}
+
+/** Resumen serializable del diagnóstico inicial (para persistir y mostrar). */
+export interface DiagnosticAreaResult {
+  area: string;
+  label: string;
+  correct: number;
+  total: number;
+}
+
+export interface DiagnosticSummary {
+  id: string;
+  results: DiagnosticAreaResult[];
+  completedAt: number;
 }

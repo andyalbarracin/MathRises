@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Flame, Zap, Target, ChevronRight, RefreshCw, BookOpen } from "lucide-react";
 import { repository } from "@/data/local/repository";
 import { getDueReviews } from "@/domain/spaced-repetition";
@@ -19,6 +20,7 @@ interface State {
   progress: UserProgress;
   masteries: ConceptMastery[];
   dueReviews: ReviewSchedule[];
+  name: string;
 }
 
 function greeting(): string {
@@ -32,29 +34,42 @@ function greeting(): string {
 const TOTAL_NODES = ROADMAP.reduce((acc, s) => acc + s.nodes.length, 0);
 
 export function TodayView() {
+  const router = useRouter();
   const [state, setState] = useState<State | null>(null);
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      const [progress, masteries, reviews] = await Promise.all([
-        repository.getProgress(),
+      const progress = await repository.getProgress();
+      if (!alive) return;
+      if (!progress.onboardingComplete) {
+        router.replace("/onboarding");
+        return;
+      }
+      const [masteries, reviews, profile] = await Promise.all([
         repository.getAllMasteries(),
         repository.getAllReviews(),
+        repository.getProfile(),
       ]);
       if (!alive) return;
-      setState({ progress, masteries, dueReviews: getDueReviews(reviews) });
+      setState({
+        progress,
+        masteries,
+        dueReviews: getDueReviews(reviews),
+        name: profile?.name ?? "",
+      });
     })();
     return () => {
       alive = false;
     };
-  }, []);
+  }, [router]);
 
   if (!state) {
     return <div className="h-40 animate-pulse rounded-2xl border border-border bg-surface/50" />;
   }
 
-  const { progress, masteries, dueReviews } = state;
+  const { progress, masteries, dueReviews, name } = state;
+  const firstName = name.split(" ")[0];
   const fracMastery = masteries.find((m) => m.conceptId === FRACCIONES_CONCEPT_ID);
   const fracLevel = fracMastery?.level ?? 0;
   const sumLevels = masteries.reduce((a, m) => a + m.level, 0);
@@ -70,6 +85,7 @@ export function TodayView() {
         <div>
           <h1 className="font-display text-2xl tracking-tight text-ink md:text-3xl">
             {greeting()}
+            {firstName ? `, ${firstName}` : ""}
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
             Faltan <span className="text-ink nums">{days}</span> días para el ingreso · UNLaM 2027

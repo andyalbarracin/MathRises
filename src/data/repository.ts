@@ -2,6 +2,7 @@ import type {
   Attempt,
   ConceptMastery,
   DailySession,
+  DiagnosticSummary,
   ErrorRecord,
   Profile,
   ReviewSchedule,
@@ -23,6 +24,11 @@ export interface RepositoryInterface {
   getMastery(conceptId: string): Promise<ConceptMastery | undefined>;
   getAllMasteries(): Promise<ConceptMastery[]>;
   upsertMastery(m: ConceptMastery): Promise<void>;
+  bulkUpsertMastery(ms: ConceptMastery[]): Promise<void>;
+
+  // Diagnóstico inicial
+  getDiagnostic(): Promise<DiagnosticSummary | undefined>;
+  saveDiagnostic(s: DiagnosticSummary): Promise<void>;
 
   // Repasos
   getReview(conceptId: string): Promise<ReviewSchedule | undefined>;

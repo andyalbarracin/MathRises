@@ -2,6 +2,7 @@ import type {
   Attempt,
   ConceptMastery,
   DailySession,
+  DiagnosticSummary,
   ErrorRecord,
   Profile,
   ReviewSchedule,
@@ -19,6 +20,7 @@ const DEFAULT_PROGRESS: UserProgress = {
   lastActiveDate: null,
   weeklyGoalMinutes: 120,
   weeklyProgressMinutes: 0,
+  onboardingComplete: false,
 };
 
 export class LocalRepository implements RepositoryInterface {
@@ -35,7 +37,7 @@ export class LocalRepository implements RepositoryInterface {
     if (!row) return { ...DEFAULT_PROGRESS };
     const { id: _id, ...rest } = row;
     void _id;
-    return rest;
+    return { ...DEFAULT_PROGRESS, ...rest };
   }
 
   async saveProgress(progress: UserProgress): Promise<void> {
@@ -53,6 +55,18 @@ export class LocalRepository implements RepositoryInterface {
 
   async upsertMastery(m: ConceptMastery): Promise<void> {
     await getDB().masteries.put(m);
+  }
+
+  async bulkUpsertMastery(ms: ConceptMastery[]): Promise<void> {
+    if (ms.length) await getDB().masteries.bulkPut(ms);
+  }
+
+  async getDiagnostic(): Promise<DiagnosticSummary | undefined> {
+    return getDB().diagnostic.get("me");
+  }
+
+  async saveDiagnostic(s: DiagnosticSummary): Promise<void> {
+    await getDB().diagnostic.put(s);
   }
 
   async getReview(conceptId: string): Promise<ReviewSchedule | undefined> {

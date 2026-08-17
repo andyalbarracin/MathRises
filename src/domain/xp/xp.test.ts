@@ -46,6 +46,7 @@ describe("updateStreak", () => {
     lastActiveDate: "2026-08-16",
     weeklyGoalMinutes: 120,
     weeklyProgressMinutes: 0,
+    onboardingComplete: true,
   };
 
   it("incrementa en días consecutivos", () => {

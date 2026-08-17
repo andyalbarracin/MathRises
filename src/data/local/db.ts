@@ -3,6 +3,7 @@ import type {
   Attempt,
   ConceptMastery,
   DailySession,
+  DiagnosticSummary,
   ErrorRecord,
   Profile,
   ReviewSchedule,
@@ -22,6 +23,7 @@ export class RiseMathDB extends Dexie {
   errors!: Table<ErrorRecord, string>;
   sessions!: Table<DailySession, string>;
   attempts!: Table<Attempt, string>;
+  diagnostic!: Table<DiagnosticSummary, string>;
 
   constructor() {
     super("risemath");
@@ -33,6 +35,9 @@ export class RiseMathDB extends Dexie {
       errors: "id, conceptId, *categories",
       sessions: "id, date",
       attempts: "id, sessionId, conceptId",
+    });
+    this.version(2).stores({
+      diagnostic: "id",
     });
   }
 }

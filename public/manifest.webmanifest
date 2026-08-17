@@ -1,0 +1,21 @@
+{
+  "name": "RiseMath — Ingreso Ingeniería UNLaM",
+  "short_name": "RiseMath",
+  "description": "Entrenamiento matemático gamificado para el ingreso a Ingeniería de la UNLaM.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1017",
+  "theme_color": "#0b1017",
+  "lang": "es-AR",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

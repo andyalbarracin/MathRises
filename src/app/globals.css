@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+/* Dark mode por clase (permite toggle explícito, dark-first). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ----------------------------------------------------------------------------
+   Sistema visual "Blueprint / Ingeniería"
+   Dark-first. Un acento (azul blueprint) + secundario (cian). Sin naranja.
+---------------------------------------------------------------------------- */
+
+:root {
+  /* Light (papel técnico) */
+  --bg: #eaeef3;
+  --surface: #ffffff;
+  --surface-2: #f4f7fa;
+  --border: #d2dbe6;
+  --ink: #16202e;
+  --ink-muted: #56657b;
+  --grid: rgba(40, 90, 160, 0.07);
+  --accent: #2f66e0;
+  --accent-ink: #ffffff;
+  --accent-2: #0e9fc4;
+  --success: #1f9d6f;
+  --warn: #b07d1f;
+  --danger: #cc4b46;
+
+  --radius: 0.875rem;
+}
+
+.dark {
+  /* Dark (mesa de dibujo) — experiencia primaria */
+  --bg: #0b1017;
+  --surface: #121a26;
+  --surface-2: #172233;
+  --border: #243149;
+  --ink: #e8eef7;
+  --ink-muted: #93a4bf;
+  --grid: rgba(96, 140, 214, 0.07);
+  --accent: #4f83ff;
+  --accent-ink: #0b1017;
+  --accent-2: #38bdf8;
+  --success: #3fb98a;
+  --warn: #d9a441;
+  --danger: #e5645f;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-2: var(--accent-2);
+  --color-success: var(--success);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.375rem);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  /* Grilla técnica sutil de fondo (papel de plano). */
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Numerales tabulares para matemática y métricas. */
+.nums,
+.katex {
+  font-feature-settings: "tnum" 1, "cv01" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

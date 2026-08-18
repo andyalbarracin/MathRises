@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Lock, Check, Star } from "lucide-react";
+import { Lock, Check, Star, Swords } from "lucide-react";
 import { repository } from "@/data/local/repository";
 import { getDueReviews } from "@/domain/spaced-repetition";
-import type { ConceptMastery, ReviewSchedule } from "@/domain/types";
-import { ROADMAP, type RoadmapNode } from "@/content/roadmap";
+import type { ConceptMastery, MockExamResult, ReviewSchedule } from "@/domain/types";
+import { ROADMAP, type RoadmapNode, type RoadmapSection } from "@/content/roadmap";
 import { PLAYABLE } from "@/content/concepts";
+import { bossId, BOSS_PASS } from "@/content/mock-exams";
 import { PageHeader } from "@/components/ui/page-header";
 import { cn } from "@/lib/utils";
 
@@ -27,16 +28,21 @@ function computeState(
 }
 
 export function RoadmapView() {
-  const [data, setData] = useState<{ masteries: ConceptMastery[]; due: ReviewSchedule[] } | null>(null);
+  const [data, setData] = useState<{
+    masteries: ConceptMastery[];
+    due: ReviewSchedule[];
+    mocks: MockExamResult[];
+  } | null>(null);
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      const [masteries, reviews] = await Promise.all([
+      const [masteries, reviews, mocks] = await Promise.all([
         repository.getAllMasteries(),
         repository.getAllReviews(),
+        repository.getMockExams(),
       ]);
-      if (alive) setData({ masteries, due: getDueReviews(reviews) });
+      if (alive) setData({ masteries, due: getDueReviews(reviews), mocks });
     })();
     return () => {
       alive = false;
@@ -45,6 +51,9 @@ export function RoadmapView() {
 
   const masteries = data?.masteries ?? [];
   const dueIds = new Set((data?.due ?? []).map((r) => r.conceptId));
+  const bossesBeaten = new Set(
+    (data?.mocks ?? []).filter((m) => m.score >= BOSS_PASS).map((m) => m.examId),
+  );
 
   return (
     <>
@@ -81,10 +90,68 @@ export function RoadmapView() {
                 );
               })}
             </ul>
+            <BossNode section={section} masteries={masteries} beaten={bossesBeaten} />
           </section>
         ))}
       </div>
     </>
+  );
+}
+
+type BossState = "LOCKED" | "READY" | "BEATEN";
+
+function BossNode({
+  section,
+  masteries,
+  beaten,
+}: {
+  section: RoadmapSection;
+  masteries: ConceptMastery[];
+  beaten: Set<string>;
+}) {
+  const playableNodes = section.nodes.filter((n) => n.playable);
+  if (playableNodes.length === 0) return null;
+
+  const id = bossId(section.module);
+  const levelOf = (cid: string) => masteries.find((m) => m.conceptId === cid)?.level ?? 0;
+  const allMastered = playableNodes.every(
+    (n) => levelOf(n.conceptId) >= (PLAYABLE[n.conceptId]?.concept.masteryRequired ?? 4),
+  );
+  const state: BossState = beaten.has(id) ? "BEATEN" : allMastered ? "READY" : "LOCKED";
+
+  const ring =
+    state === "BEATEN"
+      ? "bg-success text-white border-black/10"
+      : state === "READY"
+        ? "bg-c-amber text-white border-black/10 shadow-pop"
+        : "bg-surface-2 text-ink-muted border-border";
+  const label =
+    state === "BEATEN" ? "Jefe vencido" : state === "READY" ? "¡Desafío disponible!" : "Dominá el módulo para desbloquear";
+
+  const inner = (
+    <div className="group mt-6 flex flex-col items-center">
+      <div
+        className={cn(
+          "grid h-[68px] w-[68px] place-items-center rounded-2xl border-b-4 transition-transform",
+          state !== "LOCKED" && "group-hover:-translate-y-1",
+          ring,
+        )}
+      >
+        {state === "BEATEN" ? <Check className="h-7 w-7" strokeWidth={2.4} /> : <Swords className="h-7 w-7" strokeWidth={2.4} />}
+      </div>
+      <p className={cn("mt-2 text-center text-sm font-bold", state === "LOCKED" ? "text-ink-muted" : "text-ink")}>
+        Jefe: {section.title}
+      </p>
+      <p className="text-xs text-ink-muted">{label}</p>
+    </div>
+  );
+
+  return state === "LOCKED" ? (
+    <div className="flex justify-center">{inner}</div>
+  ) : (
+    <Link href={`/simulacros/rendir?exam=${id}`} className="flex justify-center">
+      {inner}
+    </Link>
   );
 }
 

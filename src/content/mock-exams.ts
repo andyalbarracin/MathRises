@@ -1,8 +1,9 @@
-import { FileCheck2, Shapes, Layers, BookText, type LucideIcon } from "lucide-react";
+import { FileCheck2, Shapes, Layers, BookText, Swords, type LucideIcon } from "lucide-react";
 import type { ModuleId } from "@/domain/types";
 import { createRng, seedFromString } from "@/lib/rng";
 import { generateExercise, TEMPLATES, type GeneratedExercise } from "@/domain/exercises";
 import { PLAYABLE, PLAYABLE_ORDER } from "./concepts";
+import { ROADMAP } from "./roadmap";
 
 export const MODULE_LABEL: Record<ModuleId, string> = {
   FUNDAMENTOS: "Fundamentos",
@@ -77,8 +78,38 @@ export const MOCK_EXAMS: MockExamConfig[] = [
   },
 ];
 
+/** Puntaje mínimo (sobre 100) para vencer a un jefe de módulo. */
+export const BOSS_PASS = 75;
+
+/** Devuelve el id del jefe de un módulo del roadmap. */
+export function bossId(module: ModuleId): string {
+  return `boss-${module.toLowerCase()}`;
+}
+
+/**
+ * Desafíos de jefe: uno por etapa del roadmap con temas jugables. Mezcla sin
+ * pistas de los conceptos de esa etapa; se desbloquea al dominarlos todos.
+ */
+export const BOSS_CHALLENGES: MockExamConfig[] = ROADMAP.flatMap((section) => {
+  const pool = section.nodes.filter((n) => n.playable).map((n) => n.conceptId);
+  if (pool.length === 0) return [];
+  const questionCount = Math.min(8, Math.max(5, pool.length * 2));
+  return [
+    {
+      id: bossId(section.module),
+      title: `Jefe: ${section.title}`,
+      subtitle: `Desafío final sin pistas de ${section.title}`,
+      icon: Swords,
+      tone: "violet" as const,
+      durationMin: Math.max(6, Math.round(questionCount * 0.75)),
+      questionCount,
+      pool,
+    },
+  ];
+});
+
 export function getMockExam(id: string): MockExamConfig | undefined {
-  return MOCK_EXAMS.find((e) => e.id === id);
+  return MOCK_EXAMS.find((e) => e.id === id) ?? BOSS_CHALLENGES.find((e) => e.id === id);
 }
 
 export interface MockQuestion {

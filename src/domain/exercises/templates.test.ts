@@ -30,6 +30,10 @@ describe("consistencia de todos los templates", () => {
           expect(ex.options).toBeDefined();
           const correct = ex.options!.filter((o) => ex.validate(o.id).correct);
           expect(correct).toHaveLength(1);
+          // Al menos 2 opciones y sin duplicados (por texto/latex).
+          expect(ex.options!.length).toBeGreaterThanOrEqual(2);
+          const labels = ex.options!.map((o) => o.latex ?? o.text ?? "");
+          expect(new Set(labels).size).toBe(labels.length);
         }
       }
     });

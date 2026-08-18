@@ -7,22 +7,40 @@ interface Entry {
   correct: boolean;
 }
 
-/** Baraja opciones de multiple-choice y devuelve el id de la correcta. */
+/**
+ * Baraja opciones de multiple-choice y devuelve el id de la correcta.
+ * Deduplica opciones con el mismo texto/latex (conservando siempre la correcta),
+ * para que nunca aparezcan dos opciones iguales.
+ */
 export function buildChoices(
   rng: Rng,
   entries: Entry[],
 ): { options: ExerciseOption[]; correctId: string; correctLatex: string; correctText: string } {
-  const arr = entries.map((e) => ({ ...e }));
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = rng.int(0, i);
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+  const key = (e: Entry) => e.latex ?? e.text ?? "";
+  const correct = entries.find((e) => e.correct);
+  const rest = entries.filter((e) => !e.correct);
+
+  const seen = new Set<string>();
+  const kept: Entry[] = [];
+  for (const e of [correct, ...rest]) {
+    if (!e) continue;
+    const k = key(e);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    kept.push({ ...e });
   }
-  const options: ExerciseOption[] = arr.map((e, i) => ({ id: String(i), latex: e.latex, text: e.text }));
-  const idx = arr.findIndex((e) => e.correct);
+
+  for (let i = kept.length - 1; i > 0; i--) {
+    const j = rng.int(0, i);
+    [kept[i], kept[j]] = [kept[j], kept[i]];
+  }
+
+  const options: ExerciseOption[] = kept.map((e, i) => ({ id: String(i), latex: e.latex, text: e.text }));
+  const idx = kept.findIndex((e) => e.correct);
   return {
     options,
     correctId: String(idx),
-    correctLatex: arr[idx].latex ?? "",
-    correctText: arr[idx].text ?? "",
+    correctLatex: kept[idx].latex ?? "",
+    correctText: kept[idx].text ?? "",
   };
 }

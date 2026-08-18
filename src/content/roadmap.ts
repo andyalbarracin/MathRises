@@ -80,8 +80,8 @@ export const ROADMAP: RoadmapSection[] = [
     module: "TRIGONOMETRIA",
     title: "Trigonometría",
     nodes: [
-      { conceptId: "trig-i", title: "Trigonometría I", targetWeek: 18, playable: false },
-      { conceptId: "trig-ii", title: "Trigonometría II", targetWeek: 19, playable: false },
+      { conceptId: "trig-i", title: "Trigonometría I", targetWeek: 18, playable: true },
+      { conceptId: "trig-ii", title: "Trigonometría II", targetWeek: 19, playable: true },
     ],
   },
   {

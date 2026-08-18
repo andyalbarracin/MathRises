@@ -54,9 +54,11 @@ describe("templates de fracciones", () => {
     expect(correctIds).toHaveLength(1);
   });
 
-  it("FRACTION_ERROR_SPOTTING marca la opción del denominador", () => {
+  it("FRACTION_ERROR_SPOTTING tiene una sola opción correcta (barajada)", () => {
     const ex = generateExercise(fractionErrorSpottingTemplate, "s", 0);
-    expect(ex.validate("0").correct).toBe(true);
-    expect(ex.validate("3").correct).toBe(false);
+    const correct = ex.options!.filter((o) => ex.validate(o.id).correct);
+    expect(correct).toHaveLength(1);
+    // la correcta es la del denominador común
+    expect(correct[0].text).toMatch(/denominador com/);
   });
 });

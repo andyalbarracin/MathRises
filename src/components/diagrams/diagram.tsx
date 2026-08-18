@@ -24,11 +24,21 @@ export function Diagram({ spec }: { spec: DiagramSpec }) {
       const H = (130 * spec.legB) / max;
       const ox = 55;
       const oy = 165;
+      const len = Math.sqrt(W * W + H * H);
+      const p2x = ox + W - (22 * W) / len;
+      const p2y = oy - (22 * H) / len;
       return (
         <svg viewBox="0 0 250 195" {...common}>
           <polygon points={`${ox},${oy} ${ox + W},${oy} ${ox},${oy - H}`} fill={SOFT} stroke={FIG} strokeWidth="2.5" strokeLinejoin="round" />
           {/* marca de ángulo recto */}
           <path d={`M ${ox + 12} ${oy} L ${ox + 12} ${oy - 12} L ${ox} ${oy - 12}`} fill="none" stroke={MUTED} strokeWidth="1.6" />
+          {/* ángulo θ marcado en el vértice inferior derecho */}
+          {spec.markAngle && (
+            <>
+              <path d={`M ${ox + W - 22} ${oy} A 22 22 0 0 1 ${p2x} ${p2y}`} fill="none" stroke={MUTED} strokeWidth="1.6" />
+              <text x={ox + W - 30} y={oy - 12} textAnchor="middle" fontSize="14" fontWeight="700" fill={INK}>θ</text>
+            </>
+          )}
           <Label x={ox + W / 2} y={oy + 18}>{spec.labelA}</Label>
           <Label x={ox - 18} y={oy - H / 2}>{spec.labelB}</Label>
           <Label x={ox + W / 2 + 14} y={oy - H / 2 - 6}>{spec.labelC}</Label>

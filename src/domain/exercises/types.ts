@@ -15,7 +15,7 @@ export interface ExerciseOption {
 
 /** Descripción de un diagrama geométrico (datos puros; el render es SVG). */
 export type DiagramSpec =
-  | { kind: "right-triangle"; legA: number; legB: number; labelA: string; labelB: string; labelC: string }
+  | { kind: "right-triangle"; legA: number; legB: number; labelA: string; labelB: string; labelC: string; markAngle?: boolean }
   | { kind: "triangle-angles"; a: string; b: string; c: string }
   | { kind: "rectangle"; w: number; h: number; labelW: string; labelH: string }
   | { kind: "circle"; labelR: string }

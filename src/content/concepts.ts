@@ -18,6 +18,8 @@ import {
   Triangle,
   Circle,
   Shapes,
+  Compass,
+  Waves,
   type LucideIcon,
 } from "lucide-react";
 import type { TileTone } from "@/components/ui/tile";
@@ -44,6 +46,8 @@ import { funcCuadraticaConcept, funcCuadraticaLesson, FUNC_CUADRATICA_CONCEPT_ID
 import { geoBaseConcept, geoBaseLesson, GEO_BASE_CONCEPT_ID } from "./geometry";
 import { geoPlanaConcept, geoPlanaLesson, GEO_PLANA_CONCEPT_ID } from "./geometry";
 import { geoSemConcept, geoSemLesson, GEO_SEM_CONCEPT_ID } from "./geometry";
+import { trig1Concept, trig1Lesson, TRIG1_CONCEPT_ID } from "./trig";
+import { trig2Concept, trig2Lesson, TRIG2_CONCEPT_ID } from "./trig";
 
 export interface PlayableConcept {
   concept: Concept;
@@ -180,6 +184,20 @@ export const PLAYABLE: Record<string, PlayableConcept> = {
     tone: "amber",
     icon: Shapes,
   },
+  [TRIG1_CONCEPT_ID]: {
+    concept: trig1Concept,
+    lesson: trig1Lesson,
+    templateIds: ["TRIG_RATIO", "TRIG_SPECIAL_ANGLE", "TRIG_DEFINITION"],
+    tone: "violet",
+    icon: Compass,
+  },
+  [TRIG2_CONCEPT_ID]: {
+    concept: trig2Concept,
+    lesson: trig2Lesson,
+    templateIds: ["DEG_TO_RAD", "RAD_TO_DEG", "LAW_CHOICE"],
+    tone: "blue",
+    icon: Waves,
+  },
 };
 
 /** Conceptos jugables en orden de aparición (según el plan). */
@@ -202,6 +220,8 @@ export const PLAYABLE_ORDER = [
   FUNC_CUADRATICA_CONCEPT_ID,
   GEO_PLANA_CONCEPT_ID,
   GEO_SEM_CONCEPT_ID,
+  TRIG1_CONCEPT_ID,
+  TRIG2_CONCEPT_ID,
 ];
 
 export function getPlayable(conceptId: string): PlayableConcept | undefined {

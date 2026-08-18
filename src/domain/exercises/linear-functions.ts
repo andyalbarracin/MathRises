@@ -97,13 +97,14 @@ export const parallelCheckTemplate: ExerciseTemplate = {
       m1 = rng.pick([2, 3, -2, -3, 4]);
       m2 = m1;
     } else if (kind === 1) {
-      m1 = rng.pick([2, 3, -2]);
-      m2 = -1 / m1; // perpendicular
+      m1 = rng.pick([2, 3, 4]); // positivo ⇒ perpendicular = -1/m1 (fracción limpia)
+      m2 = -1 / m1;
     } else {
       m1 = rng.pick([2, 3, -2, 4]);
       m2 = m1 + rng.pick([1, -1, 2]);
     }
     const rel = kind === 0 ? "Paralelas" : kind === 1 ? "Perpendiculares" : "Ninguna de las dos";
+    // Entero → tal cual; fracción (solo la perpendicular, -1/m1 con m1>0) → -1/m1.
     const fmtM = (m: number) => (Number.isInteger(m) ? `${m}` : `-\\frac{1}{${Math.round(-1 / m)}}`);
     const { options, correctId, correctText } = buildChoices(rng, [
       { text: "Paralelas", correct: rel === "Paralelas" },

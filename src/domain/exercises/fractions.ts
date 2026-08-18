@@ -11,6 +11,7 @@ import {
 import { validateChoice, validateFraction } from "@/domain/validation";
 import type { ErrorCategory } from "@/domain/types";
 import type { Rng } from "@/lib/rng";
+import { buildChoices } from "./mc";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 const CONCEPT_ID = "fracciones-basicas";
@@ -228,12 +229,12 @@ export const fractionErrorSpottingTemplate: ExerciseTemplate = {
     const c = rng.int(1, d);
     const wrong = { n: a + c, d: b + d };
 
-    const options = [
-      { id: "0", text: "Sumaron los denominadores en lugar de buscar denominador común." },
-      { id: "1", text: "Se equivocaron al simplificar el resultado final." },
-      { id: "2", text: "Invirtieron una de las fracciones antes de sumar." },
-      { id: "3", text: "No hay ningún error, la solución es correcta." },
-    ];
+    const { options, correctId, correctText } = buildChoices(rng, [
+      { text: "Sumaron los denominadores en lugar de buscar denominador común.", correct: true },
+      { text: "Se equivocaron al simplificar el resultado final.", correct: false },
+      { text: "Invirtieron una de las fracciones antes de sumar.", correct: false },
+      { text: "No hay ningún error, la solución es correcta.", correct: false },
+    ]);
 
     return {
       id: `${this.id}-${index}`,
@@ -245,8 +246,8 @@ export const fractionErrorSpottingTemplate: ExerciseTemplate = {
       promptLatex: `\\dfrac{${a}}{${b}} + \\dfrac{${c}}{${d}} = \\dfrac{${a}+${c}}{${b}+${d}} = \\dfrac{${wrong.n}}{${wrong.d}}`,
       promptText: `${a}/${b} + ${c}/${d} = ${wrong.n}/${wrong.d}`,
       options,
-      correctAnswerDisplay: options[0].text,
-      validate: (ans) => validateChoice(ans, "0"),
+      correctAnswerDisplay: correctText,
+      validate: (ans) => validateChoice(ans, correctId),
       classifyError: (): ErrorCategory[] => ["FRACTION_COMMON_DENOMINATOR"],
       hints: [
         "Fijate en el paso donde combinan los denominadores.",

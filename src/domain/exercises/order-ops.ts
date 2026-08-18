@@ -1,6 +1,7 @@
 import { validateChoice, validateNumeric } from "@/domain/validation";
 import type { ErrorCategory } from "@/domain/types";
 import type { Rng } from "@/lib/rng";
+import { buildChoices } from "./mc";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 const CONCEPT_ID = "orden-operaciones";
@@ -97,11 +98,11 @@ export const orderStepTemplate: ExerciseTemplate = {
     const a = rng.int(3, 12);
     const b = rng.int(2, 9);
     const c = rng.int(2, 9);
-    const options = [
-      { id: "0", latex: `${b} \\times ${c}` },
-      { id: "1", latex: `${a} + ${b}` },
-      { id: "2", latex: `${a} + ${c}` },
-    ];
+    const { options, correctId, correctLatex } = buildChoices(rng, [
+      { latex: `${b} \\times ${c}`, correct: true },
+      { latex: `${a} + ${b}`, correct: false },
+      { latex: `${a} + ${c}`, correct: false },
+    ]);
     return {
       id: `${this.id}-${index}`,
       conceptId: CONCEPT_ID,
@@ -112,8 +113,8 @@ export const orderStepTemplate: ExerciseTemplate = {
       promptLatex: `${a} + ${b} \\times ${c}`,
       promptText: `${a} + ${b} × ${c}`,
       options,
-      correctAnswerDisplay: `${b} × ${c}`,
-      validate: (ans) => validateChoice(ans, "0"),
+      correctAnswerDisplay: correctLatex,
+      validate: (ans) => validateChoice(ans, correctId),
       classifyError: (): ErrorCategory[] => ["ORDER_OF_OPERATIONS"],
       hints: [
         "La multiplicación tiene prioridad sobre la suma.",

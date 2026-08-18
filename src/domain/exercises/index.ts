@@ -15,6 +15,7 @@ import { linearFunctionTemplates } from "./linear-functions";
 import { systemTemplates } from "./systems";
 import { quadraticFunctionTemplates } from "./quadratic-functions";
 import { geometryTemplates } from "./geometry";
+import { trigTemplates } from "./trig";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
@@ -37,6 +38,7 @@ const ALL_TEMPLATES = [
   ...systemTemplates,
   ...quadraticFunctionTemplates,
   ...geometryTemplates,
+  ...trigTemplates,
 ];
 
 /** Todos los templates registrados, indexados por id. */

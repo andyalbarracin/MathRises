@@ -47,7 +47,7 @@ export function ExplanationCard({
         <BookOpen className="h-3.5 w-3.5" /> Concepto
       </Badge>
       <h2 className="font-display text-2xl text-ink">{explanation.title}</h2>
-      <div className="mt-4 space-y-3">
+      <div className="mt-5 space-y-3.5">
         {explanation.body.map((p, i) => (
           <p key={i} className="text-[17px] leading-relaxed text-ink-muted">
             {highlightGlossary(p, glossary, used)}
@@ -56,16 +56,18 @@ export function ExplanationCard({
       </div>
 
       {explanation.recall && (
-        <div className="mt-5 rounded-2xl border border-c-blue/30 bg-c-blue-soft p-4">
-          <div className="flex items-center gap-2 text-c-blue">
-            <History className="h-4 w-4" />
-            <span className="font-display text-sm font-bold">{explanation.recall.title}</span>
+        <div className="mt-6 rounded-2xl border border-c-blue/25 bg-c-blue-soft p-5">
+          <div className="flex items-center gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-c-blue/15 text-c-blue">
+              <History className="h-[18px] w-[18px]" />
+            </span>
+            <span className="font-display text-[15px] font-bold text-ink">{explanation.recall.title}</span>
           </div>
-          <p className="mt-1.5 text-[15px] leading-relaxed text-ink">{explanation.recall.text}</p>
+          <p className="mt-3 text-[16px] leading-relaxed text-ink">{explanation.recall.text}</p>
           {explanation.recall.conceptId && (
             <Link
               href={`/sesion?concept=${explanation.recall.conceptId}&type=conceptos`}
-              className="mt-2 inline-block text-sm font-bold text-c-blue hover:underline"
+              className="mt-3 inline-block text-sm font-bold text-c-blue hover:underline"
             >
               Verlo de nuevo →
             </Link>
@@ -96,23 +98,23 @@ export function ExplanationCard({
 function SimpleExplainer({ paragraphs }: { paragraphs: string[] }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="mt-4 overflow-hidden rounded-2xl border border-c-green/30 bg-c-green-soft">
+    <div className="mt-4 overflow-hidden rounded-2xl border border-c-green/25 bg-c-green-soft">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex w-full items-center gap-2.5 p-4 text-left"
+        className="flex w-full items-center gap-3 p-4 text-left"
       >
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-c-green/20 text-c-green">
-          <Baby className="h-4 w-4" />
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-c-green/15 text-c-green">
+          <Baby className="h-[18px] w-[18px]" />
         </span>
         <span className="flex-1 font-display text-[15px] font-bold text-ink">Explicámelo fácil</span>
         <ChevronDown
-          className={`h-5 w-5 text-c-green transition-transform ${open ? "rotate-180" : ""}`}
+          className={`h-5 w-5 shrink-0 text-c-green transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open && (
-        <div className="space-y-2.5 px-4 pb-4">
+        <div className="space-y-3 border-t border-c-green/20 px-5 pb-5 pt-4">
           {paragraphs.map((p, i) => (
             <p key={i} className="text-[16px] leading-relaxed text-ink">
               {p}
@@ -151,13 +153,15 @@ export function WorkedExampleCard({
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent-soft text-xs font-bold text-accent">
               {i + 1}
             </span>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <Katex expr={s.latex} className="text-ink" />
-              <p className="mt-1 text-[16px] leading-relaxed text-ink-muted">
+              <p className="mt-1.5 text-[16px] leading-relaxed text-ink-muted">
                 {highlightGlossary(s.note, glossary, used)}
               </p>
               {s.plain && (
-                <p className="mt-1 text-[15px] leading-relaxed text-c-green">💡 {s.plain}</p>
+                <p className="mt-2.5 rounded-xl bg-c-green-soft px-3.5 py-2.5 text-[15px] leading-relaxed text-c-green">
+                  {s.plain}
+                </p>
               )}
             </div>
           </li>

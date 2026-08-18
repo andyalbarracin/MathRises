@@ -92,7 +92,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           type="button"
           onClick={toggleCollapsed}
           aria-label={collapsed ? "Expandir menú" : "Contraer menú"}
-          className="md-state absolute -right-3 top-9 z-10 grid h-6 w-6 place-items-center rounded-full border border-border bg-surface text-ink-muted shadow-card hover:text-ink"
+          className="md-state absolute -right-3 top-1/2 z-10 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full border border-border bg-surface text-ink-muted shadow-card hover:text-ink"
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>

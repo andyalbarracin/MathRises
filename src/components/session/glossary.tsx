@@ -29,9 +29,9 @@ export function GlossaryTerm({ term, plain }: { term: string; plain: string }) {
           />
           <span
             role="tooltip"
-            className="absolute left-0 top-full z-30 mt-1.5 block w-[min(17rem,78vw)] rounded-2xl border border-border bg-surface-2 p-3 text-left text-[15px] font-normal leading-snug text-ink shadow-pop"
+            className="absolute left-0 top-full z-30 mt-2 block w-[min(18rem,80vw)] rounded-2xl border border-border bg-surface-2 p-4 text-left text-[15px] font-normal leading-relaxed text-ink shadow-pop"
           >
-            <span className="mb-0.5 block font-display text-sm font-bold text-accent">{term}</span>
+            <span className="mb-1.5 block font-display text-[15px] font-bold text-accent">{term}</span>
             {plain}
           </span>
         </>

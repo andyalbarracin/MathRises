@@ -1,7 +1,7 @@
 // Service worker mínimo de RiseMath: habilita instalación como PWA y
 // da un fallback offline básico para el shell de la app.
-const CACHE = "risemath-v1";
-const SHELL = ["/", "/manifest.webmanifest", "/icons/icon.svg"];
+const CACHE = "risemath-v2";
+const SHELL = ["/", "/manifest.webmanifest", "/logo/mark.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));

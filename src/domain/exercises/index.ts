@@ -20,6 +20,7 @@ import { explogTemplates } from "./explog";
 import { complexTemplates } from "./complex";
 import { factoring2Templates } from "./factoring2";
 import { rationalEqTemplates } from "./rational-eq";
+import { seminarioTemplates } from "./seminario";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
@@ -47,6 +48,7 @@ const ALL_TEMPLATES = [
   ...complexTemplates,
   ...factoring2Templates,
   ...rationalEqTemplates,
+  ...seminarioTemplates,
 ];
 
 /** Todos los templates registrados, indexados por id. */

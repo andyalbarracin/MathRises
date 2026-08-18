@@ -20,8 +20,8 @@ describe("consistencia de todos los templates", () => {
         expect(ex.hints).toHaveLength(3);
         expect(ex.steps.length).toBeGreaterThan(0);
         expect(ex.instruction.length).toBeGreaterThan(0);
-        // Debe tener enunciado LaTeX o un diagrama.
-        expect(ex.promptLatex.length > 0 || Boolean(ex.diagram)).toBe(true);
+        // Debe tener enunciado LaTeX, un diagrama o un texto de lectura.
+        expect(ex.promptLatex.length > 0 || Boolean(ex.diagram) || Boolean(ex.passage)).toBe(true);
 
         if (INPUT_TYPES.has(ex.cardType)) {
           // La respuesta correcta declarada valida como correcta.

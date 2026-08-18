@@ -24,6 +24,7 @@ import {
   Binary,
   Layers,
   Ratio,
+  BookText,
   type LucideIcon,
 } from "lucide-react";
 import type { TileTone } from "@/components/ui/tile";
@@ -56,6 +57,7 @@ import { explogConcept, explogLesson, EXPLOG_CONCEPT_ID } from "./explog";
 import { complejosConcept, complejosLesson, COMPLEJOS_CONCEPT_ID } from "./complex";
 import { factor2Concept, factor2Lesson, FACTOR2_CONCEPT_ID } from "./factoring2";
 import { racionalesConcept, racionalesLesson, RACIONALES_CONCEPT_ID } from "./rational-eq";
+import { seminarioConcept, seminarioLesson, SEMINARIO_CONCEPT_ID } from "./seminario";
 
 export interface PlayableConcept {
   concept: Concept;
@@ -233,6 +235,13 @@ export const PLAYABLE: Record<string, PlayableConcept> = {
     templateIds: ["COMPLEX_ADD", "I_POWER", "COMPLEX_CONJUGATE"],
     tone: "violet",
     icon: Binary,
+  },
+  [SEMINARIO_CONCEPT_ID]: {
+    concept: seminarioConcept,
+    lesson: seminarioLesson,
+    templateIds: ["SEM_COMPREHENSION", "SEM_MAIN_IDEA", "SEM_CONNECTOR"],
+    tone: "green",
+    icon: BookText,
   },
 };
 

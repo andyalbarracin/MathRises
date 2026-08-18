@@ -41,6 +41,8 @@ export interface GeneratedExercise {
   correctAnswerDisplay: string;
   /** Diagrama geométrico opcional (se renderiza en vez del enunciado LaTeX). */
   diagram?: DiagramSpec;
+  /** Texto de lectura opcional (Seminario / comprensión lectora). */
+  passage?: string;
   /** Valida la respuesta del usuario (tolerante a formato). */
   validate(answer: string): ValidationResult;
   /** Clasifica el tipo de error a partir de la respuesta incorrecta. */

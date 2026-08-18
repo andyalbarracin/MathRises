@@ -106,6 +106,13 @@ export const ROADMAP: RoadmapSection[] = [
     ],
   },
   {
+    module: "SEMINARIO",
+    title: "Seminario",
+    nodes: [
+      { conceptId: "seminario", title: "Comprensión lectora", targetWeek: 22, playable: true },
+    ],
+  },
+  {
     module: "SIMULACROS",
     title: "Simulacros",
     nodes: [

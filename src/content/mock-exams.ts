@@ -1,4 +1,4 @@
-import { FileCheck2, Shapes, Layers, type LucideIcon } from "lucide-react";
+import { FileCheck2, Shapes, Layers, BookText, type LucideIcon } from "lucide-react";
 import type { ModuleId } from "@/domain/types";
 import { createRng, seedFromString } from "@/lib/rng";
 import { generateExercise, TEMPLATES, type GeneratedExercise } from "@/domain/exercises";
@@ -15,6 +15,7 @@ export const MODULE_LABEL: Record<ModuleId, string> = {
   EXP_LOG: "Exponenciales y logaritmos",
   COMPLEJOS: "Números complejos",
   INTEGRACION: "Repaso",
+  SEMINARIO: "Seminario",
   SIMULACROS: "Simulacros",
 };
 
@@ -53,6 +54,16 @@ export const MOCK_EXAMS: MockExamConfig[] = [
     durationMin: 25,
     questionCount: 10,
     pool: byModules(["GEOMETRIA_I", "GEOMETRIA_II", "TRIGONOMETRIA"]),
+  },
+  {
+    id: "seminario",
+    title: "Simulacro de Seminario",
+    subtitle: "Comprensión lectora, idea principal y conectores",
+    icon: BookText,
+    tone: "green",
+    durationMin: 20,
+    questionCount: 8,
+    pool: ["seminario"],
   },
   {
     id: "integral",

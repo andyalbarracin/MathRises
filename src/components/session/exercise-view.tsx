@@ -52,15 +52,28 @@ export function ExerciseView({
 
   return (
     <div>
+      {/* Texto de lectura (Seminario) */}
+      {exercise.passage && (
+        <div className="mb-4 max-h-64 overflow-y-auto rounded-3xl border border-border bg-surface p-5 text-[15px] leading-relaxed text-ink shadow-card">
+          {exercise.passage.split("\n\n").map((para, i) => (
+            <p key={i} className={i > 0 ? "mt-3" : ""}>
+              {para}
+            </p>
+          ))}
+        </div>
+      )}
+
       <p className="text-center text-lg font-semibold leading-snug text-ink">
         {exercise.instruction}
       </p>
 
-      {/* Enunciado */}
-      <div className="mt-4 grid min-h-24 place-items-center gap-3 rounded-3xl border border-border bg-surface px-5 py-6 text-center shadow-card">
-        {exercise.diagram && <Diagram spec={exercise.diagram} />}
-        {exercise.promptLatex && <Katex expr={exercise.promptLatex} display className="text-2xl" />}
-      </div>
+      {/* Enunciado (solo si hay diagrama o fórmula) */}
+      {(exercise.diagram || exercise.promptLatex) && (
+        <div className="mt-4 grid min-h-24 place-items-center gap-3 rounded-3xl border border-border bg-surface px-5 py-6 text-center shadow-card">
+          {exercise.diagram && <Diagram spec={exercise.diagram} />}
+          {exercise.promptLatex && <Katex expr={exercise.promptLatex} display className="text-2xl" />}
+        </div>
+      )}
 
       {/* Pistas */}
       {hintsShown > 0 && (

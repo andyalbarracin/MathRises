@@ -93,6 +93,7 @@ export type ModuleId =
   | "EXP_LOG"
   | "COMPLEJOS"
   | "INTEGRACION"
+  | "SEMINARIO"
   | "SIMULACROS";
 
 export interface Concept {

@@ -6,6 +6,7 @@ import { Check, X, BookOpen } from "lucide-react";
 import type { GeneratedExercise } from "@/domain/exercises";
 import { Button } from "@/components/ui/button";
 import { Katex } from "@/components/math/katex";
+import { playSound } from "@/lib/sound";
 import { cn } from "@/lib/utils";
 
 export function FeedbackSheet({
@@ -25,6 +26,7 @@ export function FeedbackSheet({
   const [showSteps, setShowSteps] = useState(false);
 
   useLayoutEffect(() => {
+    playSound(correct ? "correct" : "wrong");
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -32,7 +34,7 @@ export function FeedbackSheet({
       gsap.from(el, { yPercent: 100, duration: 0.35, ease: "power3.out" });
     }, el);
     return () => ctx.revert();
-  }, []);
+  }, [correct]);
 
   return (
     <div

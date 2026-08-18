@@ -10,6 +10,7 @@ import { mentorClosing } from "@/content/mentors";
 import { MentorMessage } from "@/components/mentors/mentor-avatar";
 import { Mascot } from "@/components/art/mascot";
 import { Button } from "@/components/ui/button";
+import { playSound } from "@/lib/sound";
 
 export interface SummaryData {
   sessionType: SessionType;
@@ -30,6 +31,7 @@ export function SessionSummary({ data }: { data: SummaryData }) {
   const passive = data.totalCount === 0;
 
   useEffect(() => {
+    playSound("complete");
     const el = xpRef.current;
     if (!el) return;
     const obj = { v: 0 };

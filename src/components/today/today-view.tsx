@@ -12,6 +12,7 @@ import { ROADMAP, TARGET_DATE } from "@/content/roadmap";
 import { PLAYABLE, PLAYABLE_ORDER } from "@/content/concepts";
 import { SESSION_TYPES, SESSION_TYPE_ORDER } from "@/content/session-types";
 import { daysUntil } from "@/lib/date";
+import { useToast } from "@/components/ui/toast";
 import { Progress, ProgressRing } from "@/components/ui/progress";
 import { Tile } from "@/components/ui/tile";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +38,7 @@ const TOTAL_NODES = ROADMAP.reduce((acc, s) => acc + s.nodes.length, 0);
 
 export function TodayView() {
   const router = useRouter();
+  const { toast } = useToast();
   const [state, setState] = useState<State | null>(null);
 
   useEffect(() => {
@@ -54,12 +56,27 @@ export function TodayView() {
         repository.getProfile(),
       ]);
       if (!alive) return;
-      setState({ progress, masteries, dueReviews: getDueReviews(reviews), name: profile?.name ?? "" });
+      const due = getDueReviews(reviews);
+      setState({ progress, masteries, dueReviews: due, name: profile?.name ?? "" });
+
+      // Saludo una vez por pestaña.
+      try {
+        if (!sessionStorage.getItem("rm-welcomed")) {
+          sessionStorage.setItem("rm-welcomed", "1");
+          if (progress.streak > 0) {
+            toast({ emoji: "🔥", title: `Racha de ${progress.streak} ${progress.streak === 1 ? "día" : "días"}`, description: "¡No la cortes!" });
+          } else {
+            toast({ emoji: "👋", title: "¡A darle!", description: due.length > 0 ? `Tenés ${due.length} repasos` : "Sumá tu primer día" });
+          }
+        }
+      } catch {
+        /* sessionStorage no disponible */
+      }
     })();
     return () => {
       alive = false;
     };
-  }, [router]);
+  }, [router, toast]);
 
   if (!state) {
     return <div className="mx-auto h-64 max-w-3xl animate-pulse rounded-3xl bg-surface-2/60" />;

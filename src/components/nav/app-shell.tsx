@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
+import { SoundToggle } from "./sound-toggle";
 import { BrandMark } from "./brand-mark";
 
 type NavItem = { href: string; label: string; icon: React.ElementType };
@@ -72,7 +73,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <ThemeToggle />
+        <div className="flex flex-col">
+          <SoundToggle />
+          <ThemeToggle />
+        </div>
       </aside>
 
       {/* Contenido */}

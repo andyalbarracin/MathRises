@@ -3,6 +3,7 @@ import { Roboto_Flex, Fredoka } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/nav/app-shell";
 import { SWRegister } from "@/components/pwa/sw-register";
+import { ToastProvider } from "@/components/ui/toast";
 
 const roboto = Roboto_Flex({
   variable: "--font-roboto",
@@ -51,7 +52,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
       <body className="min-h-full">
-        <AppShell>{children}</AppShell>
+        <ToastProvider>
+          <AppShell>{children}</AppShell>
+        </ToastProvider>
         <SWRegister />
       </body>
     </html>

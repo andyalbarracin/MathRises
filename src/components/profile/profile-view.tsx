@@ -2,40 +2,95 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, Clock, Target, ClipboardList, ChartLine, GraduationCap, Palette } from "lucide-react";
+import { ClipboardList, ChartLine, Palette, ClipboardCheck } from "lucide-react";
 import { repository } from "@/data/local/repository";
 import type { Profile } from "@/domain/types";
 import { daysUntil } from "@/lib/date";
+import { TARGET_DATE } from "@/content/roadmap";
 import { PageHeader } from "@/components/ui/page-header";
 import { AccountCard } from "@/components/cloud/account-card";
 import { ThemeToggle } from "@/components/nav/theme-toggle";
 import { SoundToggle } from "@/components/nav/sound-toggle";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { cn } from "@/lib/utils";
 
-const DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+// Orden de la semana (n = getDay JS: 0=Dom … 6=Sáb).
+const DAYS = [
+  { n: 1, label: "Lun" },
+  { n: 2, label: "Mar" },
+  { n: 3, label: "Mié" },
+  { n: 4, label: "Jue" },
+  { n: 5, label: "Vie" },
+  { n: 6, label: "Sáb" },
+  { n: 0, label: "Dom" },
+];
+const HOURS = [2, 4, 6, 8];
 
 export function ProfileView() {
+  const { toast } = useToast();
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
+
+  // Formulario editable del plan.
+  const [name, setName] = useState("");
+  const [targetDate, setTargetDate] = useState(TARGET_DATE);
+  const [studyDays, setStudyDays] = useState<number[]>([]);
+  const [weeklyHours, setWeeklyHours] = useState(4);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     let alive = true;
     (async () => {
       const p = await repository.getProfile();
-      if (alive) setProfile(p ?? null);
+      if (!alive) return;
+      setProfile(p ?? null);
+      if (p) {
+        setName(p.name);
+        setTargetDate(p.targetDate);
+        setStudyDays(p.studyDays);
+        setWeeklyHours(p.weeklyHours);
+      }
     })();
     return () => {
       alive = false;
     };
   }, []);
 
+  function toggleDay(n: number) {
+    setStudyDays((prev) =>
+      prev.includes(n) ? prev.filter((d) => d !== n) : [...prev, n],
+    );
+  }
+
+  async function savePlan() {
+    if (!profile) return;
+    setSaving(true);
+    const updated: Profile = {
+      ...profile,
+      name: name.trim() || "Estudiante",
+      targetDate,
+      studyDays: [...studyDays].sort((a, b) => a - b),
+      weeklyHours,
+    };
+    await repository.saveProfile(updated);
+    const prog = await repository.getProgress();
+    await repository.saveProgress({ ...prog, weeklyGoalMinutes: weeklyHours * 60 });
+    setProfile(updated);
+    setSaving(false);
+    toast({ emoji: "✅", title: "Plan actualizado", description: "Recalculamos tu ritmo y tus metas." });
+  }
+
   if (profile === undefined) {
     return <div className="mx-auto h-64 max-w-2xl animate-pulse rounded-3xl bg-surface-2/60" />;
   }
 
-  const days = profile ? daysUntil(profile.targetDate) : 0;
-  const studyDays = profile
-    ? [...profile.studyDays].sort((a, b) => a - b).map((n) => DAY_NAMES[n]).join(" · ")
-    : "";
+  const days = daysUntil(targetDate);
+  const dirty =
+    !!profile &&
+    (name !== profile.name ||
+      targetDate !== profile.targetDate ||
+      weeklyHours !== profile.weeklyHours ||
+      [...studyDays].sort().join() !== [...profile.studyDays].sort().join());
 
   return (
     <>
@@ -48,9 +103,9 @@ export function ProfileView() {
         {/* Cuenta y sincronización */}
         <AccountCard />
 
-        {/* Plan de estudio */}
+        {/* Plan de estudio (editable) */}
         <section className="rounded-3xl bg-surface p-6 shadow-card">
-          <div className="mb-4 flex items-center gap-2.5">
+          <div className="mb-5 flex items-center gap-2.5">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent-soft text-accent">
               <ClipboardList className="h-5 w-5" />
             </span>
@@ -58,36 +113,117 @@ export function ProfileView() {
           </div>
 
           {profile ? (
-            <>
-              <dl className="divide-y divide-border">
-                <PlanRow icon={GraduationCap} label="Objetivo" value="Ingeniería Industrial · UNLaM 2027" />
-                <PlanRow icon={Target} label="Días para el ingreso" value={`${days} días`} />
-                <PlanRow icon={CalendarDays} label="Días de estudio" value={studyDays || "—"} />
-                <PlanRow icon={Clock} label="Meta semanal" value={`${profile.weeklyHours} h`} />
-              </dl>
-              <div className="mt-5 rounded-2xl border border-border p-4">
-                <p className="text-sm font-bold text-ink">Diagnóstico inicial</p>
-                <p className="mt-1 text-[15px] leading-relaxed text-ink-muted">
-                  Rehacé el diagnóstico y ajustá tu plan (nombre, días y horas) cuando quieras.
-                </p>
-                <Link href="/onboarding" className="mt-3 inline-block">
-                  <Button variant="outlined" size="sm">
-                    Hacer diagnóstico inicial
-                  </Button>
-                </Link>
-              </div>
-            </>
+            <div className="space-y-5">
+              <Field label="Cómo querés que te llamemos">
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={40}
+                  placeholder="Tu nombre"
+                  className="w-full rounded-2xl border-2 border-border bg-surface px-4 py-3 outline-none transition-colors focus:border-accent"
+                />
+              </Field>
+
+              <Field label="Fecha del ingreso" hint={`Faltan ${days} días`}>
+                <input
+                  type="date"
+                  value={targetDate}
+                  onChange={(e) => setTargetDate(e.target.value)}
+                  className="w-full rounded-2xl border-2 border-border bg-surface px-4 py-3 outline-none transition-colors focus:border-accent"
+                />
+              </Field>
+
+              <Field label="Días de estudio" hint={`${studyDays.length} por semana`}>
+                <div className="flex flex-wrap gap-2">
+                  {DAYS.map((d) => {
+                    const on = studyDays.includes(d.n);
+                    return (
+                      <button
+                        key={d.n}
+                        type="button"
+                        onClick={() => toggleDay(d.n)}
+                        aria-pressed={on}
+                        className={cn(
+                          "md-state h-11 w-12 rounded-2xl border-2 text-sm font-bold transition-colors",
+                          on
+                            ? "border-accent bg-accent-soft text-on-primary-container"
+                            : "border-border text-ink-muted hover:text-ink",
+                        )}
+                      >
+                        {d.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </Field>
+
+              <Field label="Meta semanal">
+                <div className="flex flex-wrap gap-2">
+                  {HOURS.map((h) => {
+                    const on = weeklyHours === h;
+                    return (
+                      <button
+                        key={h}
+                        type="button"
+                        onClick={() => setWeeklyHours(h)}
+                        aria-pressed={on}
+                        className={cn(
+                          "md-state h-11 rounded-2xl border-2 px-5 text-sm font-bold transition-colors",
+                          on
+                            ? "border-accent bg-accent-soft text-on-primary-container"
+                            : "border-border text-ink-muted hover:text-ink",
+                        )}
+                      >
+                        {h} h
+                      </button>
+                    );
+                  })}
+                </div>
+              </Field>
+
+              <Button
+                className="w-full"
+                disabled={!dirty || saving || studyDays.length === 0}
+                onClick={savePlan}
+              >
+                {saving ? "Guardando…" : "Guardar cambios"}
+              </Button>
+            </div>
           ) : (
-            <div className="rounded-2xl border border-border p-4">
+            <div className="rounded-2xl border border-border p-5">
               <p className="text-[15px] leading-relaxed text-ink-muted">
                 Todavía no configuraste tu plan. El diagnóstico inicial arma un recorrido a tu medida.
               </p>
-              <Link href="/onboarding" className="mt-3 inline-block">
+              <Link href="/onboarding" className="mt-4 inline-block">
                 <Button size="sm">Empezar diagnóstico</Button>
               </Link>
             </div>
           )}
         </section>
+
+        {/* Diagnóstico inicial */}
+        {profile && (
+          <section className="rounded-3xl bg-surface p-6 shadow-card">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+                  <ClipboardCheck className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="font-display text-base text-ink">Diagnóstico inicial</p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-ink-muted">
+                    Rehacelo cuando quieras para recalibrar tu punto de partida.
+                  </p>
+                </div>
+              </div>
+              <Link href="/onboarding">
+                <Button variant="outlined" size="sm">
+                  Hacer diagnóstico
+                </Button>
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* Preferencias */}
         <section className="rounded-3xl bg-surface p-6 shadow-card">
@@ -121,20 +257,22 @@ export function ProfileView() {
   );
 }
 
-function PlanRow({
-  icon: Icon,
+function Field({
   label,
-  value,
+  hint,
+  children,
 }: {
-  icon: React.ElementType;
   label: string;
-  value: string;
+  hint?: string;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 py-3">
-      <Icon className="h-4 w-4 shrink-0 text-ink-muted" />
-      <dt className="flex-1 text-sm text-ink-muted">{label}</dt>
-      <dd className="text-right text-sm font-bold text-ink">{value}</dd>
+    <div>
+      <div className="mb-2 flex items-baseline justify-between">
+        <label className="text-sm font-bold text-ink">{label}</label>
+        {hint && <span className="text-xs text-ink-muted">{hint}</span>}
+      </div>
+      {children}
     </div>
   );
 }

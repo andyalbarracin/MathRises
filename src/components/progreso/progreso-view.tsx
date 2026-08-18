@@ -135,7 +135,7 @@ export function ProgresoView() {
   const conceptsMastered = masteries.filter((m) => m.level >= 4).length;
   const sumLevels = masteries.reduce((a, m) => a + m.level, 0);
   const readiness = Math.round((sumLevels / (5 * TOTAL_NODES)) * 100);
-  const days = daysUntil(TARGET_DATE);
+  const days = daysUntil(profile?.targetDate ?? TARGET_DATE);
 
   // --- Semana: barras por día + tendencia vs. semana anterior ---
   const nowDate = new Date(now);

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Target } from "lucide-react";
 import { repository } from "@/data/local/repository";
+import { subscribeCloud, getCloudState } from "@/lib/cloud-sync";
+import { AccountCard } from "@/components/cloud/account-card";
 import { scoreDiagnostic, buildSeedMasteries, type AreaResult } from "@/domain/diagnostic";
 import { TARGET_DATE } from "@/content/roadmap";
 import { daysUntil } from "@/lib/date";
@@ -40,6 +42,20 @@ const META_STEPS = 6;
 
 export function OnboardingWizard() {
   const router = useRouter();
+  const cloud = useSyncExternalStore(subscribeCloud, getCloudState, getCloudState);
+  // Si el usuario inicia sesión acá (transición sin→con email), su progreso en
+  // la nube se sincroniza y lo llevamos a la app.
+  const startedLoggedIn = useRef(getCloudState().email);
+  const [justLoggedIn, setJustLoggedIn] = useState(false);
+  useEffect(() => {
+    if (!startedLoggedIn.current && cloud.email) setJustLoggedIn(true);
+  }, [cloud.email]);
+  useEffect(() => {
+    if (!justLoggedIn) return;
+    const t = setTimeout(() => router.replace("/"), 1500);
+    return () => clearTimeout(t);
+  }, [justLoggedIn, router]);
+
   const [phase, setPhase] = useState<Phase>("meta");
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
@@ -144,6 +160,8 @@ function MetaStep({
   onBack: () => void;
   onSkipDiag: () => void;
 }) {
+  const [showLogin, setShowLogin] = useState(false);
+
   if (step === 0) {
     return (
       <Reveal className="mx-auto w-full max-w-md text-center" stagger>
@@ -164,6 +182,26 @@ function MetaStep({
           Empezar
           <ArrowRight className="h-5 w-5" />
         </Button>
+
+        <div className="mt-8 border-t border-border pt-6">
+          {showLogin ? (
+            <div className="mx-auto max-w-sm text-left">
+              <AccountCard />
+            </div>
+          ) : (
+            <p className="text-sm text-ink-muted">
+              ¿Ya tenés una cuenta?{" "}
+              <button
+                type="button"
+                onClick={() => setShowLogin(true)}
+                className="font-bold text-accent hover:underline"
+              >
+                Iniciá sesión
+              </button>{" "}
+              y recuperá tu progreso.
+            </p>
+          )}
+        </div>
       </Reveal>
     );
   }

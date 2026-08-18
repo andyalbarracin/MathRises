@@ -23,6 +23,7 @@ interface State {
   masteries: ConceptMastery[];
   dueReviews: ReviewSchedule[];
   name: string;
+  targetDate: string;
 }
 
 function greeting(): string {
@@ -57,7 +58,7 @@ export function TodayView() {
       ]);
       if (!alive) return;
       const due = getDueReviews(reviews);
-      setState({ progress, masteries, dueReviews: due, name: profile?.name ?? "" });
+      setState({ progress, masteries, dueReviews: due, name: profile?.name ?? "", targetDate: profile?.targetDate ?? TARGET_DATE });
 
       // Recordatorio una vez por pestaña, según la actividad de hoy.
       try {
@@ -91,7 +92,7 @@ export function TodayView() {
 
   const sumLevels = masteries.reduce((a, m) => a + m.level, 0);
   const readiness = Math.round((sumLevels / (5 * TOTAL_NODES)) * 100);
-  const days = daysUntil(TARGET_DATE);
+  const days = daysUntil(state.targetDate);
 
   // Concepto actual: el primero jugable sin dominar.
   const currentId =

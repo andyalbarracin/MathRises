@@ -12,8 +12,8 @@ import {
   FileCheck2,
   ChartLine,
   User,
-  ChevronLeft,
-  ChevronRight,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
@@ -87,18 +87,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           collapsed ? "w-[76px] px-2" : "w-60 px-4",
         )}
       >
-        {/* Chevron en la línea divisoria */}
-        <button
-          type="button"
-          onClick={toggleCollapsed}
-          aria-label={collapsed ? "Expandir menú" : "Contraer menú"}
-          className="md-state absolute -right-3 top-1/2 z-10 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full border border-border bg-surface text-ink-muted shadow-card hover:text-ink"
-        >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </button>
-
-        <div className={cn(collapsed ? "flex justify-center" : "px-2")}>
+        {/* Encabezado: marca + botón de contraer/expandir integrado */}
+        <div className={cn("flex items-center", collapsed ? "flex-col gap-3" : "justify-between px-2")}>
           <BrandMark compact={collapsed} />
+          <button
+            type="button"
+            onClick={toggleCollapsed}
+            aria-label={collapsed ? "Expandir menú" : "Contraer menú"}
+            title={collapsed ? "Expandir menú" : "Contraer menú"}
+            className="md-state grid h-8 w-8 shrink-0 place-items-center rounded-lg text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
+          >
+            {collapsed ? (
+              <PanelLeftOpen className="h-[18px] w-[18px]" />
+            ) : (
+              <PanelLeftClose className="h-[18px] w-[18px]" />
+            )}
+          </button>
         </div>
 
         <nav className="mt-8 flex flex-1 flex-col gap-1">

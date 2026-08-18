@@ -28,6 +28,7 @@ import { PLAYABLE, PLAYABLE_ORDER } from "@/content/concepts";
 import { ROADMAP, TARGET_DATE } from "@/content/roadmap";
 import { daysUntil, todayStr } from "@/lib/date";
 import { PageHeader, EmptyState } from "@/components/ui/page-header";
+import { AccountCard } from "@/components/cloud/account-card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -82,15 +83,18 @@ export function ProfileView() {
     return (
       <>
         <PageHeader title="Perfil" />
-        <EmptyState
-          icon={GraduationCap}
-          title="Todavía no configuraste tu plan"
-          description="Completá el onboarding para ver tu tablero de progreso."
-        />
-        <div className="mt-4">
-          <Link href="/onboarding" className="font-bold text-accent hover:underline">
-            Empezar onboarding
-          </Link>
+        <div className="mx-auto max-w-3xl space-y-6">
+          <AccountCard />
+          <EmptyState
+            icon={GraduationCap}
+            title="Todavía no configuraste tu plan"
+            description="Completá el onboarding para ver tu tablero de progreso."
+          />
+          <div>
+            <Link href="/onboarding" className="font-bold text-accent hover:underline">
+              Empezar onboarding
+            </Link>
+          </div>
         </div>
       </>
     );
@@ -144,6 +148,7 @@ export function ProfileView() {
       <PageHeader title={profile.name} subtitle="Ingeniería Industrial · UNLaM 2027" />
 
       <div className="mx-auto max-w-3xl space-y-6">
+        <AccountCard />
         {/* Ritmo */}
         <PaceCard
           status={paceStatus}

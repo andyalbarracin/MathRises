@@ -16,6 +16,10 @@ import { systemTemplates } from "./systems";
 import { quadraticFunctionTemplates } from "./quadratic-functions";
 import { geometryTemplates } from "./geometry";
 import { trigTemplates } from "./trig";
+import { explogTemplates } from "./explog";
+import { complexTemplates } from "./complex";
+import { factoring2Templates } from "./factoring2";
+import { rationalEqTemplates } from "./rational-eq";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
@@ -39,6 +43,10 @@ const ALL_TEMPLATES = [
   ...quadraticFunctionTemplates,
   ...geometryTemplates,
   ...trigTemplates,
+  ...explogTemplates,
+  ...complexTemplates,
+  ...factoring2Templates,
+  ...rationalEqTemplates,
 ];
 
 /** Todos los templates registrados, indexados por id. */

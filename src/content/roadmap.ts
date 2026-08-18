@@ -38,7 +38,7 @@ export const ROADMAP: RoadmapSection[] = [
       { conceptId: "expresiones-algebraicas", title: "Expresiones algebraicas", targetWeek: 3, playable: true },
       { conceptId: "polinomios", title: "Operaciones con polinomios", targetWeek: 4, playable: true },
       { conceptId: "factorizacion-1", title: "Factorización I", targetWeek: 5, playable: true },
-      { conceptId: "factorizacion-2", title: "Factorización II y racionales", targetWeek: 6, playable: false },
+      { conceptId: "factorizacion-2", title: "Factorización II y racionales", targetWeek: 6, playable: true },
     ],
   },
   {
@@ -47,7 +47,7 @@ export const ROADMAP: RoadmapSection[] = [
     nodes: [
       { conceptId: "ecuaciones-lineales", title: "Ecuaciones lineales", targetWeek: 7, playable: true },
       { conceptId: "ecuaciones-cuadraticas", title: "Cuadráticas y valor absoluto", targetWeek: 8, playable: true },
-      { conceptId: "ecuaciones-racionales", title: "Ecuaciones racionales", targetWeek: 9, playable: false },
+      { conceptId: "ecuaciones-racionales", title: "Ecuaciones racionales", targetWeek: 9, playable: true },
       { conceptId: "inecuaciones", title: "Inecuaciones e intervalos", targetWeek: 10, playable: true },
     ],
   },
@@ -88,14 +88,14 @@ export const ROADMAP: RoadmapSection[] = [
     module: "EXP_LOG",
     title: "Exponenciales y logaritmos",
     nodes: [
-      { conceptId: "exp-log", title: "Exponenciales y logaritmos", targetWeek: 20, playable: false },
+      { conceptId: "exp-log", title: "Exponenciales y logaritmos", targetWeek: 20, playable: true },
     ],
   },
   {
     module: "COMPLEJOS",
     title: "Números complejos",
     nodes: [
-      { conceptId: "complejos", title: "Números complejos + repaso", targetWeek: 21, playable: false },
+      { conceptId: "complejos", title: "Números complejos + repaso", targetWeek: 21, playable: true },
     ],
   },
   {

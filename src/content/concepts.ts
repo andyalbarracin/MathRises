@@ -20,6 +20,10 @@ import {
   Shapes,
   Compass,
   Waves,
+  TrendingUp,
+  Binary,
+  Layers,
+  Ratio,
   type LucideIcon,
 } from "lucide-react";
 import type { TileTone } from "@/components/ui/tile";
@@ -48,6 +52,10 @@ import { geoPlanaConcept, geoPlanaLesson, GEO_PLANA_CONCEPT_ID } from "./geometr
 import { geoSemConcept, geoSemLesson, GEO_SEM_CONCEPT_ID } from "./geometry";
 import { trig1Concept, trig1Lesson, TRIG1_CONCEPT_ID } from "./trig";
 import { trig2Concept, trig2Lesson, TRIG2_CONCEPT_ID } from "./trig";
+import { explogConcept, explogLesson, EXPLOG_CONCEPT_ID } from "./explog";
+import { complejosConcept, complejosLesson, COMPLEJOS_CONCEPT_ID } from "./complex";
+import { factor2Concept, factor2Lesson, FACTOR2_CONCEPT_ID } from "./factoring2";
+import { racionalesConcept, racionalesLesson, RACIONALES_CONCEPT_ID } from "./rational-eq";
 
 export interface PlayableConcept {
   concept: Concept;
@@ -198,9 +206,37 @@ export const PLAYABLE: Record<string, PlayableConcept> = {
     tone: "blue",
     icon: Waves,
   },
+  [FACTOR2_CONCEPT_ID]: {
+    concept: factor2Concept,
+    lesson: factor2Lesson,
+    templateIds: ["TRINOMIAL_FACTOR", "RATIONAL_SIMPLIFY", "RATIONAL_DOMAIN"],
+    tone: "green",
+    icon: Layers,
+  },
+  [RACIONALES_CONCEPT_ID]: {
+    concept: racionalesConcept,
+    lesson: racionalesLesson,
+    templateIds: ["RATIONAL_EQ_SOLVE", "CROSS_MULTIPLY", "EXCLUDED_VALUE"],
+    tone: "coral",
+    icon: Ratio,
+  },
+  [EXPLOG_CONCEPT_ID]: {
+    concept: explogConcept,
+    lesson: explogLesson,
+    templateIds: ["LOG_EVAL", "EXP_SOLVE", "LOG_PROPERTY"],
+    tone: "amber",
+    icon: TrendingUp,
+  },
+  [COMPLEJOS_CONCEPT_ID]: {
+    concept: complejosConcept,
+    lesson: complejosLesson,
+    templateIds: ["COMPLEX_ADD", "I_POWER", "COMPLEX_CONJUGATE"],
+    tone: "violet",
+    icon: Binary,
+  },
 };
 
-/** Conceptos jugables en orden de aparición (según el plan). */
+/** Conceptos jugables en orden de aparición (según el plan, por semana). */
 export const PLAYABLE_ORDER = [
   ENTEROS_CONCEPT_ID,
   ORDEN_CONCEPT_ID,
@@ -210,8 +246,10 @@ export const PLAYABLE_ORDER = [
   EXPRESIONES_CONCEPT_ID,
   POLINOMIOS_CONCEPT_ID,
   FACTOR1_CONCEPT_ID,
+  FACTOR2_CONCEPT_ID,
   LINEALES_CONCEPT_ID,
   CUADRATICAS_CONCEPT_ID,
+  RACIONALES_CONCEPT_ID,
   INECUACIONES_CONCEPT_ID,
   GEO_BASE_CONCEPT_ID,
   FUNCION_CONCEPT_ID,
@@ -222,6 +260,8 @@ export const PLAYABLE_ORDER = [
   GEO_SEM_CONCEPT_ID,
   TRIG1_CONCEPT_ID,
   TRIG2_CONCEPT_ID,
+  EXPLOG_CONCEPT_ID,
+  COMPLEJOS_CONCEPT_ID,
 ];
 
 export function getPlayable(conceptId: string): PlayableConcept | undefined {

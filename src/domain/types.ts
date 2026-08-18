@@ -213,3 +213,17 @@ export interface DiagnosticSummary {
   results: DiagnosticAreaResult[];
   completedAt: number;
 }
+
+/** Resultado de un simulacro (examen de práctica cronometrado). */
+export interface MockExamResult {
+  id: string;
+  examId: string;
+  title: string;
+  score: number; // 0–100
+  correct: number;
+  total: number;
+  unanswered: number;
+  durationMs: number;
+  breakdown: { module: string; correct: number; total: number }[];
+  completedAt: number;
+}

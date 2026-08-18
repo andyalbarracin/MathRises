@@ -71,8 +71,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const collapsed = useCollapsed();
 
-  // La sesión y el onboarding corren a pantalla completa, sin cromo de navegación.
-  const immersive = pathname.startsWith("/sesion") || pathname.startsWith("/onboarding");
+  // La sesión, el onboarding y los simulacros corren a pantalla completa.
+  const immersive =
+    pathname.startsWith("/sesion") ||
+    pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/simulacros/rendir");
   if (immersive) return <>{children}</>;
 
   return (

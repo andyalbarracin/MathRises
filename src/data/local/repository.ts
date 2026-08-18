@@ -4,6 +4,7 @@ import type {
   DailySession,
   DiagnosticSummary,
   ErrorRecord,
+  MockExamResult,
   Profile,
   ReviewSchedule,
   UserProgress,
@@ -67,6 +68,15 @@ export class LocalRepository implements RepositoryInterface {
 
   async saveDiagnostic(s: DiagnosticSummary): Promise<void> {
     await getDB().diagnostic.put(s);
+  }
+
+  async saveMockExam(r: MockExamResult): Promise<void> {
+    await getDB().mockExams.put(r);
+  }
+
+  async getMockExams(): Promise<MockExamResult[]> {
+    const all = await getDB().mockExams.toArray();
+    return all.sort((a, b) => b.completedAt - a.completedAt);
   }
 
   async getReview(conceptId: string): Promise<ReviewSchedule | undefined> {

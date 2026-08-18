@@ -15,11 +15,13 @@ export function ExerciseView({
   locked,
   result,
   onSubmit,
+  examMode = false,
 }: {
   exercise: GeneratedExercise;
   locked: boolean;
   result: ValidationResult | null;
   onSubmit: (answer: string, hintsUsed: number) => void;
+  examMode?: boolean;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [hintsShown, setHintsShown] = useState(0);
@@ -75,7 +77,7 @@ export function ExerciseView({
         </ul>
       )}
 
-      {!locked && (
+      {!locked && !examMode && (
         <div className="mt-3 flex justify-center">
           <button
             type="button"

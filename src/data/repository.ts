@@ -4,6 +4,7 @@ import type {
   DailySession,
   DiagnosticSummary,
   ErrorRecord,
+  MockExamResult,
   Profile,
   ReviewSchedule,
   UserProgress,
@@ -29,6 +30,10 @@ export interface RepositoryInterface {
   // Diagnóstico inicial
   getDiagnostic(): Promise<DiagnosticSummary | undefined>;
   saveDiagnostic(s: DiagnosticSummary): Promise<void>;
+
+  // Simulacros
+  saveMockExam(r: MockExamResult): Promise<void>;
+  getMockExams(): Promise<MockExamResult[]>;
 
   // Repasos
   getReview(conceptId: string): Promise<ReviewSchedule | undefined>;

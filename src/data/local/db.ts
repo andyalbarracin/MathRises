@@ -5,6 +5,7 @@ import type {
   DailySession,
   DiagnosticSummary,
   ErrorRecord,
+  MockExamResult,
   Profile,
   ReviewSchedule,
   UserProgress,
@@ -24,6 +25,7 @@ export class RiseMathDB extends Dexie {
   sessions!: Table<DailySession, string>;
   attempts!: Table<Attempt, string>;
   diagnostic!: Table<DiagnosticSummary, string>;
+  mockExams!: Table<MockExamResult, string>;
 
   constructor() {
     super("risemath");
@@ -38,6 +40,9 @@ export class RiseMathDB extends Dexie {
     });
     this.version(2).stores({
       diagnostic: "id",
+    });
+    this.version(3).stores({
+      mockExams: "id, completedAt",
     });
   }
 }

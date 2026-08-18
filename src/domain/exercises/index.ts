@@ -3,6 +3,13 @@ import { fractionTemplates } from "./fractions";
 import { integerTemplates } from "./integers";
 import { orderOpsTemplates } from "./order-ops";
 import { powerTemplates } from "./powers";
+import { percentageTemplates } from "./percentages";
+import { algebraTemplates } from "./algebra";
+import { polynomialTemplates } from "./polynomials";
+import { factoringTemplates } from "./factoring";
+import { linearEqTemplates } from "./linear-eq";
+import { quadraticEqTemplates } from "./quadratic-eq";
+import { inequalityTemplates } from "./inequalities";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
@@ -13,6 +20,13 @@ const ALL_TEMPLATES = [
   ...integerTemplates,
   ...orderOpsTemplates,
   ...powerTemplates,
+  ...percentageTemplates,
+  ...algebraTemplates,
+  ...polynomialTemplates,
+  ...factoringTemplates,
+  ...linearEqTemplates,
+  ...quadraticEqTemplates,
+  ...inequalityTemplates,
 ];
 
 /** Todos los templates registrados, indexados por id. */

@@ -1,37 +1,23 @@
 /**
- * Mascota original de RiseMath: personaje geométrico amigable (no copia mascotas).
- * Construido con formas simples y coloreable por tono.
+ * Mascota original de RiseMath: un perrito blanco expresivo (estilo caricatura,
+ * inspirado en beagles) con orejas y nariz negras y un collar del color del mentor.
+ * Diseño propio (no reproduce personajes con derechos de autor).
  */
 
 export type Tone = "violet" | "blue" | "green" | "amber" | "coral";
-export type Expression = "happy" | "cheer" | "think";
+export type Expression = "happy" | "cheer" | "think" | "oops";
 
-const TONE_VARS: Record<Tone, { body: string; soft: string }> = {
-  violet: { body: "var(--c-violet)", soft: "var(--c-violet-soft)" },
-  blue: { body: "var(--c-blue)", soft: "var(--c-blue-soft)" },
-  green: { body: "var(--c-green)", soft: "var(--c-green-soft)" },
-  amber: { body: "var(--c-amber)", soft: "var(--c-amber-soft)" },
-  coral: { body: "var(--c-coral)", soft: "var(--c-coral-soft)" },
+const TONE_VAR: Record<Tone, string> = {
+  violet: "var(--c-violet)",
+  blue: "var(--c-blue)",
+  green: "var(--c-green)",
+  amber: "var(--c-amber)",
+  coral: "var(--c-coral)",
 };
 
-/** Símbolo matemático que lleva la mascota en el pecho. */
-function Emblem({ symbol }: { symbol?: string }) {
-  if (!symbol) return null;
-  return (
-    <text
-      x="50"
-      y="70"
-      textAnchor="middle"
-      fontSize="20"
-      fontWeight="800"
-      fill="#ffffff"
-      fontFamily="var(--font-display)"
-      opacity="0.9"
-    >
-      {symbol}
-    </text>
-  );
-}
+const OUTLINE = "#2a2833";
+const BLACK = "#211f2a";
+const WHITE = "#ffffff";
 
 export function Mascot({
   tone = "violet",
@@ -46,9 +32,10 @@ export function Mascot({
   size?: number;
   className?: string;
 }) {
-  const c = TONE_VARS[tone];
+  const collar = TONE_VAR[tone];
   const cheer = expression === "cheer";
   const think = expression === "think";
+  const oops = expression === "oops";
 
   return (
     <svg
@@ -58,58 +45,101 @@ export function Mascot({
       className={className}
       role="img"
       aria-label="Mascota de RiseMath"
+      fill="none"
     >
-      {/* piecitos */}
-      <ellipse cx="38" cy="92" rx="7" ry="5" fill={c.body} />
-      <ellipse cx="62" cy="92" rx="7" ry="5" fill={c.body} />
+      <g stroke={OUTLINE} strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round">
+        {/* cola */}
+        <path d="M74 84 q14 2 12 -12" fill={WHITE} />
 
-      {/* bracitos */}
-      {cheer ? (
-        <>
-          <rect x="12" y="34" width="8" height="20" rx="4" fill={c.body} transform="rotate(-35 16 44)" />
-          <rect x="80" y="34" width="8" height="20" rx="4" fill={c.body} transform="rotate(35 84 44)" />
-        </>
-      ) : (
-        <>
-          <rect x="14" y="52" width="8" height="18" rx="4" fill={c.body} />
-          <rect x="78" y="52" width="8" height="18" rx="4" fill={c.body} />
-        </>
-      )}
+        {/* cuerpo sentado */}
+        <path d="M30 95 Q24 74 32 66 L68 66 Q76 74 70 95 Z" fill={WHITE} />
+        {/* patitas delanteras */}
+        <ellipse cx="42" cy="92" rx="7" ry="5" fill={WHITE} />
+        <ellipse cx="58" cy="92" rx="7" ry="5" fill={WHITE} />
 
-      {/* cuerpo */}
-      <rect x="22" y="26" width="56" height="62" rx="24" fill={c.body} />
-      {/* pancita */}
-      <ellipse cx="50" cy="64" rx="20" ry="18" fill="#ffffff" opacity="0.16" />
-      <Emblem symbol={symbol} />
+        {/* bracitos (festejo) */}
+        {cheer && (
+          <>
+            <path d="M30 66 Q18 58 14 46" fill="none" strokeWidth="5" />
+            <path d="M70 66 Q82 58 86 46" fill="none" strokeWidth="5" />
+          </>
+        )}
 
-      {/* carita */}
-      <ellipse cx="50" cy="44" rx="22" ry="18" fill="#ffffff" />
+        {/* collar */}
+        <path d="M34 66 Q50 72 66 66" fill="none" stroke={collar} strokeWidth="6" />
+        <circle cx="50" cy="71" r="5.5" fill={collar} stroke={OUTLINE} strokeWidth="1.6" />
+        {symbol && (
+          <text
+            x="50"
+            y="74.5"
+            textAnchor="middle"
+            fontSize="7"
+            fontWeight="700"
+            fill={WHITE}
+            stroke="none"
+            fontFamily="var(--font-display)"
+          >
+            {symbol}
+          </text>
+        )}
+
+        {/* orejas negras (detrás de la cabeza) */}
+        <path d="M31 34 Q18 40 22 58 Q30 60 34 48 Z" fill={BLACK} />
+        <path d="M69 34 Q82 40 78 58 Q70 60 66 48 Z" fill={BLACK} />
+
+        {/* cabeza */}
+        <circle cx="50" cy="43" r="22" fill={WHITE} />
+
+        {/* mancha negra sobre un ojo */}
+        <path d="M56 30 Q68 30 66 44 Q60 50 54 44 Q52 34 56 30 Z" fill={BLACK} stroke="none" />
+
+        {/* hocico */}
+        <ellipse cx="50" cy="52" rx="13" ry="10" fill={WHITE} />
+        <ellipse cx="50" cy="49" rx="4.2" ry="3.4" fill={BLACK} stroke="none" />
+      </g>
+
       {/* ojos */}
       {think ? (
         <>
-          <circle cx="42" cy="42" r="3.4" fill="#211d38" />
-          <path d="M54 40 q4 -3 8 0" stroke="#211d38" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+          <path d="M39 41 q3 -3 6 0" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+          <circle cx="59" cy="41" r="2.6" fill={WHITE} />
+          <circle cx="59.6" cy="40.4" r="1.8" fill={BLACK} />
+        </>
+      ) : cheer ? (
+        <>
+          <path d="M37 42 q4 -5 8 0" stroke={OUTLINE} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+          <path d="M55 42 q4 -5 8 0" stroke={WHITE} strokeWidth="2.4" fill="none" strokeLinecap="round" />
         </>
       ) : (
         <>
-          <circle cx="42" cy="42" r="4" fill="#211d38" />
-          <circle cx="58" cy="42" r="4" fill="#211d38" />
-          <circle cx="43.4" cy="40.6" r="1.3" fill="#fff" />
-          <circle cx="59.4" cy="40.6" r="1.3" fill="#fff" />
+          <circle cx="41" cy="42" r="3.1" fill={BLACK} />
+          <circle cx="59" cy="42" r="3.1" fill={WHITE} />
+          <circle cx="59" cy="42" r="2.2" fill={BLACK} />
+          <circle cx="42" cy="41" r="1" fill={WHITE} />
         </>
       )}
-      {/* cachetes */}
-      <circle cx="35" cy="49" r="3.6" fill={c.body} opacity="0.3" />
-      <circle cx="65" cy="49" r="3.6" fill={c.body} opacity="0.3" />
+
+      {/* cejas de preocupación (ups) */}
+      {oops && (
+        <>
+          <path d="M36 36 l7 2" stroke={OUTLINE} strokeWidth="2" strokeLinecap="round" />
+          <path d="M64 36 l-7 2" stroke={WHITE} strokeWidth="2" strokeLinecap="round" />
+        </>
+      )}
+
       {/* boca */}
       {cheer ? (
-        <path d="M42 50 q8 10 16 0 q-8 4 -16 0Z" fill="#211d38" />
+        <g stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round">
+          <path d="M43 54 q7 9 14 0 q-7 5 -14 0 Z" fill={BLACK} stroke="none" />
+          <path d="M50 58 q0 5 4 5 q3 0 3 -3" fill={collar} strokeWidth="1.4" />
+        </g>
+      ) : oops ? (
+        <path d="M45 59 q3 -3 5 0 q2 3 5 0" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+      ) : think ? (
+        <circle cx="52" cy="59" r="2" fill={OUTLINE} />
       ) : (
-        <path d="M44 51 q6 6 12 0" stroke="#211d38" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+        <path d="M44 57 q6 5 12 0" stroke={OUTLINE} strokeWidth="2.2" fill="none" strokeLinecap="round" />
       )}
-      {/* antenita */}
-      <line x1="50" y1="26" x2="50" y2="16" stroke={c.body} strokeWidth="3" strokeLinecap="round" />
-      <circle cx="50" cy="14" r="4" fill={c.body} />
     </svg>
   );
 }

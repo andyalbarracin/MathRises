@@ -1,12 +1,10 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+/** Tarjeta "elevated" Material 3: surface-container-low + elevación tonal. */
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={cn("rounded-3xl border border-border bg-surface shadow-card", className)}
-      {...props}
-    />
+    <div className={cn("rounded-2xl bg-surface shadow-card", className)} {...props} />
   );
 }
 
@@ -19,7 +17,5 @@ export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDi
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return (
-    <h3 className={cn("font-display text-lg text-ink", className)} {...props} />
-  );
+  return <h3 className={cn("font-display text-lg text-ink", className)} {...props} />;
 }

@@ -1,96 +1,164 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
-/* Dark mode por clase (toggle explícito). */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ----------------------------------------------------------------------------
-   Sistema visual RiseMath — friendly, cálido, premium (estilo Duolingo/Brilliant,
-   original). Light-first, con dark opcional. Tipografía redondeada.
+   RiseMath — Sistema de diseño Material 3 (M3).
+   Roles de color tonales (light + dark), capas de superficie con elevación,
+   formas y state layers. Los nombres "legacy" (accent, ink, surface…) se mapean
+   a roles M3 para que los componentes existentes adopten Material automáticamente.
 ---------------------------------------------------------------------------- */
 
 :root {
-  /* Superficies */
-  --bg: #f5f4fc;
-  --surface: #ffffff;
-  --surface-2: #f2f1fb;
-  --border: #e9e7f4;
-  --ink: #211d38;
-  --ink-muted: #6c6885;
+  /* --- M3 color roles (LIGHT) --- */
+  --primary: #6750a4;
+  --on-primary: #ffffff;
+  --primary-container: #eaddff;
+  --on-primary-container: #21005d;
+  --secondary: #625b71;
+  --on-secondary: #ffffff;
+  --secondary-container: #e8def8;
+  --on-secondary-container: #1d192b;
+  --tertiary: #7d5260;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #ffd8e4;
+  --on-tertiary-container: #31111d;
+  --error: #b3261e;
+  --on-error: #ffffff;
+  --error-container: #f9dedc;
+  --on-error-container: #410e0b;
 
-  /* Primario (violeta) */
-  --accent: #6c5ce7;
-  --accent-strong: #5a49d6;
-  --accent-ink: #ffffff;
-  --accent-soft: #ece9ff;
-  --accent-2: #4c8dff;
+  --surface: #fef7ff;
+  --on-surface: #1d1b20;
+  --surface-variant: #e7e0ec;
+  --on-surface-variant: #49454f;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f7f2fa;
+  --surface-container: #f3edf7;
+  --surface-container-high: #ece6f0;
+  --surface-container-highest: #e6e0e9;
+  --outline: #79747e;
+  --outline-variant: #cac4d0;
+  --inverse-surface: #322f35;
+  --inverse-on-surface: #f5eff7;
 
-  /* Familia de acentos por categoría */
-  --c-green: #14b877;
-  --c-green-soft: #e3f7ef;
-  --c-blue: #3d8bff;
-  --c-blue-soft: #e6f0ff;
-  --c-amber: #f5a524;
-  --c-amber-soft: #fdf0da;
-  --c-coral: #fb6f84;
-  --c-coral-soft: #ffe9ed;
-  --c-violet: #6c5ce7;
-  --c-violet-soft: #ece9ff;
+  /* Colores extendidos armonizados (categorías / semántica) */
+  --c-green: #3a7d5c;
+  --c-green-soft: #d4f0e0;
+  --c-blue: #3a6ea5;
+  --c-blue-soft: #d9e7f7;
+  --c-amber: #8a6a1f;
+  --c-amber-soft: #f7ead0;
+  --c-coral: #a04352;
+  --c-coral-soft: #ffdce1;
+  --c-violet: #6750a4;
+  --c-violet-soft: #eaddff;
+  --success: #3a7d5c;
+  --success-soft: #d4f0e0;
+  --warn: #8a6a1f;
+  --streak: #d3701a;
 
-  /* Semántica */
-  --success: #14b877;
-  --success-soft: #e3f7ef;
-  --warn: #f5a524;
-  --danger: #f0596b;
-  --danger-soft: #ffe9ec;
-  --streak: #ff7a1a;
+  /* --- Legacy → M3 --- */
+  --bg: var(--surface);
+  --surface-2: var(--surface-container-high);
+  --border: var(--outline-variant);
+  --ink: var(--on-surface);
+  --ink-muted: var(--on-surface-variant);
+  --accent: var(--primary);
+  --accent-strong: #4f378b;
+  --accent-ink: var(--on-primary);
+  --accent-soft: var(--primary-container);
+  --accent-2: var(--tertiary);
+  --danger: var(--error);
+  --danger-soft: var(--error-container);
 
-  --radius: 1.25rem;
-  --shadow-card: 0 1px 2px rgba(33, 29, 56, 0.04), 0 12px 28px -14px rgba(33, 29, 56, 0.18);
-  --shadow-pop: 0 10px 30px -8px rgba(108, 92, 231, 0.35);
+  /* Elevación M3 (light) */
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.08);
+  --elev-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.1);
+  --elev-3: 0 4px 8px 3px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  --radius: 1rem; /* M3 corner.large = 16px */
 }
 
 .dark {
-  --bg: #131223;
-  --surface: #1c1a2e;
-  --surface-2: #262340;
-  --border: #322e4d;
-  --ink: #f0eefb;
-  --ink-muted: #a7a3c2;
+  /* --- M3 color roles (DARK) --- */
+  --primary: #d0bcff;
+  --on-primary: #381e72;
+  --primary-container: #4f378b;
+  --on-primary-container: #eaddff;
+  --secondary: #ccc2dc;
+  --on-secondary: #332d41;
+  --secondary-container: #4a4458;
+  --on-secondary-container: #e8def8;
+  --tertiary: #efb8c8;
+  --on-tertiary: #492532;
+  --tertiary-container: #633b48;
+  --on-tertiary-container: #ffd8e4;
+  --error: #f2b8b5;
+  --on-error: #601410;
+  --error-container: #8c1d18;
+  --on-error-container: #f9dedc;
 
-  --accent: #8a7cff;
-  --accent-strong: #9a8dff;
-  --accent-ink: #14122a;
-  --accent-soft: rgba(138, 124, 255, 0.16);
-  --accent-2: #6aa4ff;
+  --surface: #141218;
+  --on-surface: #e6e0e9;
+  --surface-variant: #49454f;
+  --on-surface-variant: #cac4d0;
+  --surface-container-lowest: #0f0d13;
+  --surface-container-low: #1d1b20;
+  --surface-container: #211f26;
+  --surface-container-high: #2b2930;
+  --surface-container-highest: #36343b;
+  --outline: #938f99;
+  --outline-variant: #49454f;
+  --inverse-surface: #e6e0e9;
+  --inverse-on-surface: #322f35;
 
-  --c-green: #2dd196;
-  --c-green-soft: rgba(45, 209, 150, 0.16);
-  --c-blue: #6aa4ff;
-  --c-blue-soft: rgba(106, 164, 255, 0.16);
-  --c-amber: #ffb84d;
-  --c-amber-soft: rgba(255, 184, 77, 0.16);
-  --c-coral: #ff8a9c;
-  --c-coral-soft: rgba(255, 138, 156, 0.16);
-  --c-violet: #8a7cff;
-  --c-violet-soft: rgba(138, 124, 255, 0.16);
-
-  --success: #2dd196;
-  --success-soft: rgba(45, 209, 150, 0.16);
-  --warn: #ffb84d;
-  --danger: #ff7183;
-  --danger-soft: rgba(255, 113, 131, 0.16);
+  --c-green: #7cd6aa;
+  --c-green-soft: rgba(124, 214, 170, 0.16);
+  --c-blue: #9fc3f0;
+  --c-blue-soft: rgba(159, 195, 240, 0.18);
+  --c-amber: #e6c27a;
+  --c-amber-soft: rgba(230, 194, 122, 0.18);
+  --c-coral: #f4a6b2;
+  --c-coral-soft: rgba(244, 166, 178, 0.18);
+  --c-violet: #d0bcff;
+  --c-violet-soft: rgba(208, 188, 255, 0.18);
+  --success: #7cd6aa;
+  --success-soft: rgba(124, 214, 170, 0.16);
+  --warn: #e6c27a;
   --streak: #ff9142;
 
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 30px -16px rgba(0, 0, 0, 0.6);
-  --shadow-pop: 0 10px 30px -8px rgba(138, 124, 255, 0.4);
+  --bg: var(--surface);
+  --surface-2: var(--surface-container-high);
+  --border: var(--outline-variant);
+  --ink: var(--on-surface);
+  --ink-muted: var(--on-surface-variant);
+  --accent: var(--primary);
+  --accent-strong: #d0bcff;
+  --accent-ink: var(--on-primary);
+  --accent-soft: var(--primary-container);
+  --accent-2: var(--tertiary);
+  --danger: var(--error);
+  --danger-soft: var(--error-container);
+
+  --elev-1: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.5);
+  --elev-2: 0 2px 6px 2px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.5);
+  --elev-3: 0 4px 8px 3px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
+  /* La página usa el rol M3 "surface"; las tarjetas, surface-container-low
+     (un escalón por encima) para tener contraste y elevación tonal. */
   --color-background: var(--bg);
-  --color-surface: var(--surface);
+  --color-surface: var(--surface-container-low);
   --color-surface-2: var(--surface-2);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
   --color-border: var(--border);
+  --color-outline: var(--outline);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
 
@@ -99,6 +167,11 @@
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
   --color-accent-2: var(--accent-2);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-container: var(--tertiary-container);
 
   --color-c-green: var(--c-green);
   --color-c-green-soft: var(--c-green-soft);
@@ -116,14 +189,16 @@
   --color-warn: var(--warn);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
+  --color-on-error: var(--on-error);
+  --color-on-error-container: var(--on-error-container);
   --color-streak: var(--streak);
 
-  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fredoka), var(--font-nunito), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fredoka), var(--font-roboto), sans-serif;
 
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 0.5rem);
-  --radius-2xl: calc(var(--radius) + 1rem);
+  --radius-xl: calc(var(--radius) + 0.75rem);
+  --radius-2xl: calc(var(--radius) + 1.5rem);
 }
 
 * {
@@ -142,7 +217,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Numerales tabulares para matemática y métricas. */
 .nums,
 .katex {
   font-feature-settings: "tnum" 1;
@@ -155,18 +229,30 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Sombra de tarjeta reutilizable. */
-.shadow-card {
-  box-shadow: var(--shadow-card);
+/* Elevación */
+.elev-1 { box-shadow: var(--elev-1); }
+.elev-2 { box-shadow: var(--elev-2); }
+.elev-3 { box-shadow: var(--elev-3); }
+.shadow-card { box-shadow: var(--elev-1); }
+.shadow-pop { box-shadow: var(--elev-2); }
+
+/* State layer M3: overlay del color de contenido en hover/press. */
+.md-state { position: relative; }
+.md-state::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
 }
-.shadow-pop {
-  box-shadow: var(--shadow-pop);
-}
+.md-state:hover::after { opacity: 0.08; }
+.md-state:active::after { opacity: 0.12; }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

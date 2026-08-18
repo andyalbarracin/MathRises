@@ -3,26 +3,23 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// Botones Material 3: forma pill, state layer en hover/press, elevación sutil.
 const buttonVariants = cva(
-  "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-2xl font-bold transition-all duration-150 active:translate-y-0.5 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/25 [&_svg]:shrink-0",
+  "md-state inline-flex select-none items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-full font-medium tracking-[0.01em] transition-[box-shadow] duration-150 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        // Botón "jugoso" con borde inferior 3D que se hunde al presionar.
-        primary:
-          "bg-accent text-accent-ink border-b-[3px] border-accent-strong hover:brightness-[1.03] active:border-b-0 active:mt-[3px] shadow-pop",
-        secondary:
-          "bg-surface text-ink border-2 border-border hover:border-accent/50 active:translate-y-0.5",
-        soft: "bg-accent-soft text-accent hover:brightness-[0.98]",
-        ghost: "text-ink-muted hover:bg-surface-2 hover:text-ink",
-        success:
-          "bg-success text-white border-b-[3px] border-black/15 active:border-b-0 active:mt-[3px]",
-        danger:
-          "bg-danger text-white border-b-[3px] border-black/15 active:border-b-0 active:mt-[3px]",
+        primary: "bg-accent text-accent-ink hover:shadow-[var(--elev-1)]",
+        tonal: "bg-secondary-container text-on-secondary-container hover:shadow-[var(--elev-1)]",
+        soft: "bg-accent-soft text-on-primary-container",
+        ghost: "bg-transparent text-accent",
+        outlined: "border border-outline bg-transparent text-accent",
+        success: "bg-success text-white hover:shadow-[var(--elev-1)]",
+        danger: "bg-danger text-on-error hover:shadow-[var(--elev-1)]",
       },
       size: {
-        sm: "h-10 px-4 text-sm",
-        md: "h-12 px-6 text-[15px]",
+        sm: "h-9 px-4 text-sm",
+        md: "h-11 px-6 text-[15px]",
         lg: "h-14 px-8 text-base",
       },
     },

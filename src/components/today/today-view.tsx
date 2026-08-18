@@ -11,7 +11,7 @@ import type { ConceptMastery, ReviewSchedule, UserProgress } from "@/domain/type
 import { ROADMAP, TARGET_DATE } from "@/content/roadmap";
 import { PLAYABLE, PLAYABLE_ORDER } from "@/content/concepts";
 import { SESSION_TYPES, SESSION_TYPE_ORDER } from "@/content/session-types";
-import { daysUntil } from "@/lib/date";
+import { daysUntil, todayStr } from "@/lib/date";
 import { useToast } from "@/components/ui/toast";
 import { Tile } from "@/components/ui/tile";
 import { Badge } from "@/components/ui/badge";
@@ -49,23 +49,27 @@ export function TodayView() {
         router.replace("/onboarding");
         return;
       }
-      const [masteries, reviews, profile] = await Promise.all([
+      const [masteries, reviews, profile, recent] = await Promise.all([
         repository.getAllMasteries(),
         repository.getAllReviews(),
         repository.getProfile(),
+        repository.getRecentSessions(30),
       ]);
       if (!alive) return;
       const due = getDueReviews(reviews);
       setState({ progress, masteries, dueReviews: due, name: profile?.name ?? "" });
 
-      // Saludo una vez por pestaña.
+      // Recordatorio una vez por pestaña, según la actividad de hoy.
       try {
         if (!sessionStorage.getItem("rm-welcomed")) {
           sessionStorage.setItem("rm-welcomed", "1");
-          if (progress.streak > 0) {
-            toast({ emoji: "🔥", title: `Racha de ${progress.streak} ${progress.streak === 1 ? "día" : "días"}`, description: "¡No la cortes!" });
+          const studiedToday = recent.some((s) => s.completedAt !== null && s.date === todayStr());
+          if (studiedToday) {
+            toast({ emoji: "✅", title: "Ya sumaste hoy", description: progress.streak > 0 ? `Racha de ${progress.streak} ${progress.streak === 1 ? "día" : "días"} 🔥` : "¡Bien ahí!" });
+          } else if (progress.streak > 0) {
+            toast({ emoji: "🔥", title: `Racha de ${progress.streak} ${progress.streak === 1 ? "día" : "días"} en juego`, description: "Sumá una sesión hoy para no cortarla." });
           } else {
-            toast({ emoji: "👋", title: "¡A darle!", description: due.length > 0 ? `Tenés ${due.length} repasos` : "Sumá tu primer día" });
+            toast({ emoji: "👋", title: "¡A darle!", description: due.length > 0 ? `Tenés ${due.length} repasos para hacer` : "Sumá tu primer día" });
           }
         }
       } catch {

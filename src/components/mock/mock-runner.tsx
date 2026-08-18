@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, Clock } from "lucide-react";
 import { repository } from "@/data/local/repository";
 import { levelForXp, updateStreak } from "@/domain/xp";
+import { explainError } from "@/domain/errors";
 import type { MockExamResult, ModuleId, UserProgress } from "@/domain/types";
 import { getMockExam, buildMockQuestions, MODULE_LABEL, type MockQuestion } from "@/content/mock-exams";
 import { todayStr } from "@/lib/date";
@@ -104,6 +105,20 @@ export function MockRunner({ examId }: { examId: string }) {
     return () => clearTimeout(t);
   }, [phase, secondsLeft, finish]);
 
+  async function recordMockError(q: MockQuestion, answer: string) {
+    const categories = q.exercise.classifyError(answer);
+    await repository.recordError({
+      conceptId: q.conceptId,
+      exerciseId: q.exercise.id,
+      prompt: q.exercise.promptText,
+      userAnswer: answer,
+      correctAnswer: q.exercise.correctAnswerDisplay,
+      categories,
+      explanation: explainError(categories),
+      nextReviewAt: Date.now() + 86_400_000,
+    });
+  }
+
   function record(correct: boolean | null) {
     answersRef.current[index] = correct;
     if (index + 1 >= questions.length) void finish();
@@ -160,7 +175,11 @@ export function MockRunner({ examId }: { examId: string }) {
             locked={false}
             result={null}
             examMode
-            onSubmit={(answer) => record(q.exercise.validate(answer).correct)}
+            onSubmit={(answer) => {
+              const v = q.exercise.validate(answer);
+              if (!v.correct) void recordMockError(q, answer);
+              record(v.correct);
+            }}
           />
           <div className="mt-4 flex justify-center">
             <Button variant="ghost" onClick={() => record(null)}>

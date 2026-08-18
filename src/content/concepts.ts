@@ -11,6 +11,10 @@ import {
   Equal,
   Sigma,
   ChevronsLeftRight,
+  Spline,
+  LineChart,
+  Grid2x2,
+  Parentheses,
   type LucideIcon,
 } from "lucide-react";
 import type { TileTone } from "@/components/ui/tile";
@@ -30,6 +34,10 @@ import { factor1Concept, factor1Lesson, FACTOR1_CONCEPT_ID } from "./factoring";
 import { linealesConcept, linealesLesson, LINEALES_CONCEPT_ID } from "./linear-eq";
 import { cuadraticasConcept, cuadraticasLesson, CUADRATICAS_CONCEPT_ID } from "./quadratic-eq";
 import { inecuacionesConcept, inecuacionesLesson, INECUACIONES_CONCEPT_ID } from "./inequalities";
+import { funcionConcept, funcionLesson, FUNCION_CONCEPT_ID } from "./functions";
+import { funcLinealConcept, funcLinealLesson, FUNC_LINEAL_CONCEPT_ID } from "./linear-functions";
+import { sistemasConcept, sistemasLesson, SISTEMAS_CONCEPT_ID } from "./systems";
+import { funcCuadraticaConcept, funcCuadraticaLesson, FUNC_CUADRATICA_CONCEPT_ID } from "./quadratic-functions";
 
 export interface PlayableConcept {
   concept: Concept;
@@ -117,6 +125,34 @@ export const PLAYABLE: Record<string, PlayableConcept> = {
     tone: "amber",
     icon: ChevronsLeftRight,
   },
+  [FUNCION_CONCEPT_ID]: {
+    concept: funcionConcept,
+    lesson: funcionLesson,
+    templateIds: ["FUNCTION_EVAL", "FUNCTION_EVAL_SQUARE", "DOMAIN_MC"],
+    tone: "green",
+    icon: Parentheses,
+  },
+  [FUNC_LINEAL_CONCEPT_ID]: {
+    concept: funcLinealConcept,
+    lesson: funcLinealLesson,
+    templateIds: ["SLOPE_FROM_EQUATION", "SLOPE_TWO_POINTS", "PARALLEL_CHECK"],
+    tone: "blue",
+    icon: LineChart,
+  },
+  [SISTEMAS_CONCEPT_ID]: {
+    concept: sistemasConcept,
+    lesson: sistemasLesson,
+    templateIds: ["SYSTEM_SOLVE_X", "SYSTEM_SOLVE_Y", "SYSTEM_SOLUTION_POINT"],
+    tone: "violet",
+    icon: Grid2x2,
+  },
+  [FUNC_CUADRATICA_CONCEPT_ID]: {
+    concept: funcCuadraticaConcept,
+    lesson: funcCuadraticaLesson,
+    templateIds: ["VERTEX_X", "CONCAVITY", "ROOTS_PARABOLA"],
+    tone: "coral",
+    icon: Spline,
+  },
 };
 
 /** Conceptos jugables en orden de aparición (según el plan). */
@@ -132,6 +168,10 @@ export const PLAYABLE_ORDER = [
   LINEALES_CONCEPT_ID,
   CUADRATICAS_CONCEPT_ID,
   INECUACIONES_CONCEPT_ID,
+  FUNCION_CONCEPT_ID,
+  FUNC_LINEAL_CONCEPT_ID,
+  SISTEMAS_CONCEPT_ID,
+  FUNC_CUADRATICA_CONCEPT_ID,
 ];
 
 export function getPlayable(conceptId: string): PlayableConcept | undefined {

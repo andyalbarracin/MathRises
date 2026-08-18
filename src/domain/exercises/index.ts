@@ -10,6 +10,10 @@ import { factoringTemplates } from "./factoring";
 import { linearEqTemplates } from "./linear-eq";
 import { quadraticEqTemplates } from "./quadratic-eq";
 import { inequalityTemplates } from "./inequalities";
+import { functionTemplates } from "./functions";
+import { linearFunctionTemplates } from "./linear-functions";
+import { systemTemplates } from "./systems";
+import { quadraticFunctionTemplates } from "./quadratic-functions";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
@@ -27,6 +31,10 @@ const ALL_TEMPLATES = [
   ...linearEqTemplates,
   ...quadraticEqTemplates,
   ...inequalityTemplates,
+  ...functionTemplates,
+  ...linearFunctionTemplates,
+  ...systemTemplates,
+  ...quadraticFunctionTemplates,
 ];
 
 /** Todos los templates registrados, indexados por id. */

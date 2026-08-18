@@ -62,10 +62,10 @@ export const ROADMAP: RoadmapSection[] = [
     module: "FUNCIONES",
     title: "Funciones",
     nodes: [
-      { conceptId: "concepto-funcion", title: "Concepto de función", targetWeek: 12, playable: false },
-      { conceptId: "funciones-lineales", title: "Función lineal y rectas", targetWeek: 13, playable: false },
-      { conceptId: "sistemas-ecuaciones", title: "Sistemas de ecuaciones", targetWeek: 14, playable: false },
-      { conceptId: "funciones-cuadraticas", title: "Función cuadrática", targetWeek: 15, playable: false },
+      { conceptId: "concepto-funcion", title: "Concepto de función", targetWeek: 12, playable: true },
+      { conceptId: "funciones-lineales", title: "Función lineal y rectas", targetWeek: 13, playable: true },
+      { conceptId: "sistemas-ecuaciones", title: "Sistemas de ecuaciones", targetWeek: 14, playable: true },
+      { conceptId: "funciones-cuadraticas", title: "Función cuadrática", targetWeek: 15, playable: true },
     ],
   },
   {

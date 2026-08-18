@@ -6,6 +6,7 @@ import type { GeneratedExercise } from "@/domain/exercises";
 import type { ValidationResult } from "@/domain/validation";
 import { Button } from "@/components/ui/button";
 import { Katex } from "@/components/math/katex";
+import { Diagram } from "@/components/diagrams/diagram";
 import { MathAnswerPad } from "./math-pad";
 import { cn } from "@/lib/utils";
 
@@ -54,8 +55,9 @@ export function ExerciseView({
       </p>
 
       {/* Enunciado */}
-      <div className="mt-4 grid min-h-[96px] place-items-center rounded-3xl border border-border bg-surface px-5 py-7 text-center shadow-card">
-        <Katex expr={exercise.promptLatex} display className="text-2xl" />
+      <div className="mt-4 grid min-h-24 place-items-center gap-3 rounded-3xl border border-border bg-surface px-5 py-6 text-center shadow-card">
+        {exercise.diagram && <Diagram spec={exercise.diagram} />}
+        {exercise.promptLatex && <Katex expr={exercise.promptLatex} display className="text-2xl" />}
       </div>
 
       {/* Pistas */}

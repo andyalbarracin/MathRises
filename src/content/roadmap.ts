@@ -55,7 +55,7 @@ export const ROADMAP: RoadmapSection[] = [
     module: "GEOMETRIA_I",
     title: "Geometría I",
     nodes: [
-      { conceptId: "geometria-base", title: "Geometría base", targetWeek: 11, playable: false },
+      { conceptId: "geometria-base", title: "Geometría base", targetWeek: 11, playable: true },
     ],
   },
   {
@@ -72,8 +72,8 @@ export const ROADMAP: RoadmapSection[] = [
     module: "GEOMETRIA_II",
     title: "Geometría II",
     nodes: [
-      { conceptId: "geometria-plana", title: "Geometría plana avanzada", targetWeek: 16, playable: false },
-      { conceptId: "semejanza-transformaciones", title: "Semejanza y transformaciones", targetWeek: 17, playable: false },
+      { conceptId: "geometria-plana", title: "Geometría plana avanzada", targetWeek: 16, playable: true },
+      { conceptId: "semejanza-transformaciones", title: "Semejanza y transformaciones", targetWeek: 17, playable: true },
     ],
   },
   {

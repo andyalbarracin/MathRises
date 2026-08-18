@@ -13,6 +13,15 @@ export interface ExerciseOption {
   text?: string;
 }
 
+/** Descripción de un diagrama geométrico (datos puros; el render es SVG). */
+export type DiagramSpec =
+  | { kind: "right-triangle"; legA: number; legB: number; labelA: string; labelB: string; labelC: string }
+  | { kind: "triangle-angles"; a: string; b: string; c: string }
+  | { kind: "rectangle"; w: number; h: number; labelW: string; labelH: string }
+  | { kind: "circle"; labelR: string }
+  | { kind: "coord-point"; x: number; y: number; label?: string }
+  | { kind: "similar-triangles"; small: [string, string]; large: [string, string] };
+
 /** Una instancia concreta de ejercicio, lista para renderizar y corregir. */
 export interface GeneratedExercise {
   id: string;
@@ -30,6 +39,8 @@ export interface GeneratedExercise {
   options?: ExerciseOption[];
   /** Respuesta correcta legible (para el feedback / paso a paso). */
   correctAnswerDisplay: string;
+  /** Diagrama geométrico opcional (se renderiza en vez del enunciado LaTeX). */
+  diagram?: DiagramSpec;
   /** Valida la respuesta del usuario (tolerante a formato). */
   validate(answer: string): ValidationResult;
   /** Clasifica el tipo de error a partir de la respuesta incorrecta. */

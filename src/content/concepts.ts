@@ -15,6 +15,9 @@ import {
   LineChart,
   Grid2x2,
   Parentheses,
+  Triangle,
+  Circle,
+  Shapes,
   type LucideIcon,
 } from "lucide-react";
 import type { TileTone } from "@/components/ui/tile";
@@ -38,6 +41,9 @@ import { funcionConcept, funcionLesson, FUNCION_CONCEPT_ID } from "./functions";
 import { funcLinealConcept, funcLinealLesson, FUNC_LINEAL_CONCEPT_ID } from "./linear-functions";
 import { sistemasConcept, sistemasLesson, SISTEMAS_CONCEPT_ID } from "./systems";
 import { funcCuadraticaConcept, funcCuadraticaLesson, FUNC_CUADRATICA_CONCEPT_ID } from "./quadratic-functions";
+import { geoBaseConcept, geoBaseLesson, GEO_BASE_CONCEPT_ID } from "./geometry";
+import { geoPlanaConcept, geoPlanaLesson, GEO_PLANA_CONCEPT_ID } from "./geometry";
+import { geoSemConcept, geoSemLesson, GEO_SEM_CONCEPT_ID } from "./geometry";
 
 export interface PlayableConcept {
   concept: Concept;
@@ -153,6 +159,27 @@ export const PLAYABLE: Record<string, PlayableConcept> = {
     tone: "coral",
     icon: Spline,
   },
+  [GEO_BASE_CONCEPT_ID]: {
+    concept: geoBaseConcept,
+    lesson: geoBaseLesson,
+    templateIds: ["PYTHAGORAS", "TRIANGLE_ANGLE_SUM", "RECTANGLE_MEASURE"],
+    tone: "blue",
+    icon: Triangle,
+  },
+  [GEO_PLANA_CONCEPT_ID]: {
+    concept: geoPlanaConcept,
+    lesson: geoPlanaLesson,
+    templateIds: ["CIRCLE_MEASURE", "COORD_POINT", "COORD_QUADRANT"],
+    tone: "green",
+    icon: Circle,
+  },
+  [GEO_SEM_CONCEPT_ID]: {
+    concept: geoSemConcept,
+    lesson: geoSemLesson,
+    templateIds: ["SIMILAR_SIDE", "SCALE_LENGTH", "SCALE_FACTOR"],
+    tone: "amber",
+    icon: Shapes,
+  },
 };
 
 /** Conceptos jugables en orden de aparición (según el plan). */
@@ -168,10 +195,13 @@ export const PLAYABLE_ORDER = [
   LINEALES_CONCEPT_ID,
   CUADRATICAS_CONCEPT_ID,
   INECUACIONES_CONCEPT_ID,
+  GEO_BASE_CONCEPT_ID,
   FUNCION_CONCEPT_ID,
   FUNC_LINEAL_CONCEPT_ID,
   SISTEMAS_CONCEPT_ID,
   FUNC_CUADRATICA_CONCEPT_ID,
+  GEO_PLANA_CONCEPT_ID,
+  GEO_SEM_CONCEPT_ID,
 ];
 
 export function getPlayable(conceptId: string): PlayableConcept | undefined {

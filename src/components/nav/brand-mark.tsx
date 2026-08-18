@@ -1,5 +1,5 @@
 /** Marca de RiseMath: nodo técnico + wordmark. Original, sin AI-slop. */
-export function BrandMark() {
+export function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex items-center gap-2.5">
       <svg
@@ -30,9 +30,11 @@ export function BrandMark() {
         />
         <circle cx="20" cy="7" r="2.2" fill="currentColor" />
       </svg>
-      <span className="font-display text-lg leading-none tracking-tight text-ink">
-        Rise<span className="text-accent">Math</span>
-      </span>
+      {!compact && (
+        <span className="font-display text-lg leading-none tracking-tight text-ink">
+          Rise<span className="text-accent">Math</span>
+        </span>
+      )}
     </div>
   );
 }

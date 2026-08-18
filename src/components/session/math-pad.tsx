@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Delete, Check } from "lucide-react";
 import { Katex } from "@/components/math/katex";
 
@@ -25,21 +25,47 @@ export function MathAnswerPad({
 }) {
   const [value, setValue] = useState("");
 
-  function press(k: string) {
-    if (disabled) return;
-    setValue((v) => {
-      if (k === "±") {
-        return v.startsWith("-") ? v.slice(1) : "-" + v;
-      }
-      if (k === "/") {
-        if (!allowFraction || v.includes("/") || v === "" || v === "-") return v;
-        return v + "/";
-      }
-      return v + k;
-    });
-  }
+  const press = useCallback(
+    (k: string) => {
+      if (disabled) return;
+      setValue((v) => {
+        if (k === "±") return v.startsWith("-") ? v.slice(1) : "-" + v;
+        if (k === "/") {
+          if (!allowFraction || v.includes("/") || v === "" || v === "-") return v;
+          return v + "/";
+        }
+        return v + k;
+      });
+    },
+    [disabled, allowFraction],
+  );
 
   const canSubmit = value.trim() !== "" && value !== "-" && !value.endsWith("/") && !disabled;
+
+  // Teclado físico: dígitos, "/", "-" (signo), Backspace y Enter/Espacio para responder.
+  useEffect(() => {
+    if (disabled) return;
+    function onKey(e: KeyboardEvent) {
+      if (/^[0-9]$/.test(e.key)) {
+        e.preventDefault();
+        press(e.key);
+      } else if (e.key === "/") {
+        e.preventDefault();
+        press("/");
+      } else if (e.key === "-") {
+        e.preventDefault();
+        press("±");
+      } else if (e.key === "Backspace") {
+        e.preventDefault();
+        setValue((v) => v.slice(0, -1));
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (canSubmit) onSubmit(value);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [disabled, press, canSubmit, value, onSubmit]);
 
   return (
     <div>

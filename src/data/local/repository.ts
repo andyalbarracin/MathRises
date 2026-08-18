@@ -139,6 +139,14 @@ export class LocalRepository implements RepositoryInterface {
   async getRecentSessions(limit: number): Promise<DailySession[]> {
     return getDB().sessions.orderBy("date").reverse().limit(limit).toArray();
   }
+
+  async getAllSessions(): Promise<DailySession[]> {
+    return getDB().sessions.toArray();
+  }
+
+  async countAttempts(): Promise<number> {
+    return getDB().attempts.count();
+  }
 }
 
 /** Singleton del repositorio local (usar solo en el cliente). */

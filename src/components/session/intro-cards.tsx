@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { BookOpen, Sparkles } from "lucide-react";
 import type { LessonContent } from "@/content/fractions";
 import { MENTORS, type MentorSlug } from "@/content/mentors";
@@ -8,6 +9,20 @@ import { Button } from "@/components/ui/button";
 import { Katex } from "@/components/math/katex";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/reveal";
+
+/** Enter / Espacio para continuar. */
+function useEnterContinue(onContinue: () => void) {
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onContinue();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onContinue]);
+}
 
 export function ExplanationCard({
   lesson,
@@ -19,6 +34,7 @@ export function ExplanationCard({
   const { explanation } = lesson;
   const slug = explanation.mentor as MentorSlug;
   const mentor = MENTORS[slug];
+  useEnterContinue(onContinue);
   return (
     <Reveal stagger>
       <Badge tone="accent" className="mb-4">
@@ -57,6 +73,7 @@ export function WorkedExampleCard({
   lastStep?: boolean;
 }) {
   const { workedExample } = lesson;
+  useEnterContinue(onContinue);
   return (
     <Reveal stagger>
       <Badge tone="accent" className="mb-4">

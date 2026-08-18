@@ -18,7 +18,7 @@ function useIsDark() {
   );
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   const dark = useIsDark();
 
   function toggle() {
@@ -35,11 +35,12 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
+      title={dark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
+      className="md-state flex items-center gap-2 rounded-full px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
       aria-label={dark ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
     >
       {dark ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
-      {dark ? "Tema claro" : "Tema oscuro"}
+      {!compact && (dark ? "Tema claro" : "Tema oscuro")}
     </button>
   );
 }

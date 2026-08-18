@@ -13,7 +13,6 @@ import { PLAYABLE, PLAYABLE_ORDER } from "@/content/concepts";
 import { SESSION_TYPES, SESSION_TYPE_ORDER } from "@/content/session-types";
 import { daysUntil } from "@/lib/date";
 import { useToast } from "@/components/ui/toast";
-import { Progress, ProgressRing } from "@/components/ui/progress";
 import { Tile } from "@/components/ui/tile";
 import { Badge } from "@/components/ui/badge";
 import { Mascot } from "@/components/art/mascot";
@@ -116,36 +115,57 @@ export function TodayView() {
         </div>
       </div>
 
-      {/* Hero */}
-      <div className="mt-5 overflow-hidden rounded-3xl border border-border bg-accent-soft p-5 shadow-card sm:p-6">
-        <div className="flex items-center gap-5">
-          <ProgressRing value={readiness} size={104} stroke={11}>
-            <div>
-              <p className="font-display text-2xl text-ink nums">{readiness}%</p>
-              <p className="-mt-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
-                listo
-              </p>
+      {/* Hero: continuar donde te quedaste (clickeable) */}
+      {(() => {
+        const conceptLevel = levelOf(currentId);
+        const started = conceptLevel > 0;
+        const href = `/sesion?concept=${currentId}&type=${started ? "practica" : "conceptos"}`;
+        return (
+          <Link
+            href={href}
+            className="mt-5 block overflow-hidden rounded-3xl bg-accent p-5 text-accent-ink shadow-card transition-all hover:brightness-[1.04] hover:shadow-[var(--elev-2)] sm:p-6"
+          >
+            <div className="flex items-center gap-5">
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold uppercase tracking-wide opacity-80">
+                  {started ? "Seguí donde te quedaste" : "Empecemos el camino"}
+                </p>
+                <p className="mt-1 font-display text-2xl">{current.concept.title}</p>
+                <div className="mt-3 flex items-center gap-3">
+                  <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/25">
+                    <div
+                      className="h-full rounded-full bg-white transition-[width] duration-500"
+                      style={{ width: `${(conceptLevel / 5) * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-sm font-bold nums opacity-90">
+                    {Math.round((conceptLevel / 5) * 100)}%
+                  </span>
+                </div>
+                <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 font-bold">
+                  {started ? "Continuar" : "Empezar"}
+                  <ChevronRight className="h-5 w-5" />
+                </span>
+              </div>
+              <div className="hidden shrink-0 sm:block">
+                <Mascot expression="cheer" size={116} />
+              </div>
             </div>
-          </ProgressRing>
-          <div className="min-w-0 flex-1">
-            <p className="font-display text-lg text-ink">
-              {readiness < 20 ? "¡Arranquemos el camino!" : "¡Vas muy bien!"}
-            </p>
-            <p className="mt-1 text-sm text-ink-muted">
-              Nivel {progress.level} · {levelName(progress.level)}. Faltan{" "}
-              <span className="font-bold text-ink nums">{days}</span> días para el ingreso.
-            </p>
-          </div>
-          <div className="hidden shrink-0 sm:block">
-            <Mascot tone="violet" expression="cheer" symbol="+" size={92} />
-          </div>
-        </div>
+          </Link>
+        );
+      })()}
+
+      {/* Resumen breve */}
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        <MiniStat label="Preparación" value={`${readiness}%`} />
+        <MiniStat label="Nivel" value={`${progress.level}`} sub={levelName(progress.level)} />
+        <MiniStat label="Para el ingreso" value={`${days}`} sub="días" />
       </div>
 
-      {/* Tipos de sesión */}
+      {/* Tipos de sesión (secundario) */}
       <section className="mt-7">
         <div className="mb-3 flex items-baseline justify-between">
-          <h2 className="font-display text-lg text-ink">¿Cómo querés estudiar hoy?</h2>
+          <h2 className="font-display text-lg text-ink">O elegí otro tipo de sesión</h2>
           <Link href="/roadmap" className="text-sm font-bold text-accent hover:underline">
             Ver camino
           </Link>
@@ -160,18 +180,15 @@ export function TodayView() {
               <Link
                 key={t}
                 href={`/sesion?concept=${currentId}&type=${t}`}
-                className="group flex items-center gap-4 rounded-3xl border border-border bg-surface p-4 shadow-card transition-all hover:-translate-y-0.5 hover:border-accent/40"
+                className="group flex items-center gap-4 rounded-2xl bg-surface p-4 shadow-card transition-all hover:-translate-y-0.5"
               >
-                <Tile icon={Icon} tone={info.tone} size={54} />
+                <Tile icon={Icon} tone={info.tone} size={50} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="font-display text-[17px] text-ink">{info.label}</p>
-                    {dueCount != null && dueCount > 0 && (
-                      <Badge tone="warn">{dueCount}</Badge>
-                    )}
+                    <p className="font-display text-[16px] text-ink">{info.label}</p>
+                    {dueCount != null && dueCount > 0 && <Badge tone="warn">{dueCount}</Badge>}
                   </div>
-                  <p className="mt-0.5 line-clamp-2 text-sm text-ink-muted">{info.blurb}</p>
-                  <p className="mt-1 text-xs font-semibold text-ink-muted">{info.minutes}</p>
+                  <p className="mt-0.5 line-clamp-1 text-sm text-ink-muted">{info.blurb}</p>
                 </div>
                 <ChevronRight className="h-5 w-5 shrink-0 text-ink-muted transition-transform group-hover:translate-x-0.5" />
               </Link>
@@ -179,23 +196,15 @@ export function TodayView() {
           })}
         </div>
       </section>
+    </div>
+  );
+}
 
-      {/* Camino actual */}
-      <section className="mt-7 rounded-3xl border border-border bg-surface p-5 shadow-card">
-        <div className="flex items-center gap-3">
-          <Tile icon={current.icon} tone={current.tone} size={46} />
-          <div className="min-w-0 flex-1">
-            <p className="text-sm text-ink-muted">Estás en</p>
-            <p className="font-display text-[17px] text-ink">{current.concept.title}</p>
-          </div>
-        </div>
-        <div className="mt-3 flex items-center gap-3">
-          <Progress value={(levelOf(currentId) / 5) * 100} />
-          <span className="w-10 shrink-0 text-right text-sm font-bold text-ink-muted nums">
-            {Math.round((levelOf(currentId) / 5) * 100)}%
-          </span>
-        </div>
-      </section>
+function MiniStat({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div className="rounded-2xl bg-surface p-3 text-center shadow-card">
+      <p className="font-display text-xl text-ink nums">{value}</p>
+      <p className="text-[11px] font-semibold text-ink-muted">{sub ?? label}</p>
     </div>
   );
 }

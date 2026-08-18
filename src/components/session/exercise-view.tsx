@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Lightbulb, Check } from "lucide-react";
 import type { GeneratedExercise } from "@/domain/exercises";
 import type { ValidationResult } from "@/domain/validation";
@@ -26,9 +26,32 @@ export function ExerciseView({
   const isChoice =
     exercise.cardType === "MULTIPLE_CHOICE" || exercise.cardType === "ERROR_SPOTTING";
 
+  // Atajos de teclado para opciones: flechas para navegar, Enter/Espacio para confirmar.
+  useEffect(() => {
+    if (locked || !isChoice) return;
+    const opts = exercise.options ?? [];
+    const idx = opts.findIndex((o) => o.id === selected);
+    function onKey(e: KeyboardEvent) {
+      if (["ArrowDown", "ArrowRight"].includes(e.key)) {
+        e.preventDefault();
+        setSelected(opts[Math.min(opts.length - 1, idx + 1)]?.id ?? opts[0].id);
+      } else if (["ArrowUp", "ArrowLeft"].includes(e.key)) {
+        e.preventDefault();
+        setSelected(opts[Math.max(0, idx < 0 ? 0 : idx - 1)]?.id ?? opts[0].id);
+      } else if ((e.key === "Enter" || e.key === " ") && selected) {
+        e.preventDefault();
+        onSubmit(selected, hintsShown);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [locked, isChoice, exercise, selected, hintsShown, onSubmit]);
+
   return (
     <div>
-      <p className="text-center text-sm font-semibold text-ink-muted">{exercise.instruction}</p>
+      <p className="text-center text-lg font-semibold leading-snug text-ink">
+        {exercise.instruction}
+      </p>
 
       {/* Enunciado */}
       <div className="mt-4 grid min-h-[96px] place-items-center rounded-3xl border border-border bg-surface px-5 py-7 text-center shadow-card">

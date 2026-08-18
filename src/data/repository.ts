@@ -44,4 +44,6 @@ export interface RepositoryInterface {
   completeSession(s: DailySession): Promise<void>;
   appendAttempt(a: Attempt): Promise<void>;
   getRecentSessions(limit: number): Promise<DailySession[]>;
+  getAllSessions(): Promise<DailySession[]>;
+  countAttempts(): Promise<number>;
 }

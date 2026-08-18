@@ -86,7 +86,8 @@ export function SessionRunner({
 
       const hasDue = getDueReviews([reviewRef.current]).length > 0;
       const p = buildPlan({ templateIds: playable.templateIds, type, mode, hasDueReview: hasDue });
-      const sid = `s-${Date.now()}`;
+      // Semilla con componente aleatorio: garantiza ejercicios distintos en cada sesión.
+      const sid = `s-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
       sessionIdRef.current = sid;
 
       let exIdx = 0;

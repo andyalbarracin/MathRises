@@ -1,5 +1,5 @@
 import type { Concept } from "@/domain/types";
-import { Calculator, Divide, ListOrdered, type LucideIcon } from "lucide-react";
+import { Calculator, Divide, ListOrdered, Superscript, type LucideIcon } from "lucide-react";
 import type { TileTone } from "@/components/ui/tile";
 import {
   fraccionesConcept,
@@ -9,6 +9,7 @@ import {
 } from "./fractions";
 import { enterosConcept, enterosLesson, ENTEROS_CONCEPT_ID } from "./integers";
 import { ordenConcept, ordenLesson, ORDEN_CONCEPT_ID } from "./order-ops";
+import { potenciasConcept, potenciasLesson, POTENCIAS_CONCEPT_ID } from "./powers";
 
 export interface PlayableConcept {
   concept: Concept;
@@ -40,10 +41,22 @@ export const PLAYABLE: Record<string, PlayableConcept> = {
     tone: "violet",
     icon: Divide,
   },
+  [POTENCIAS_CONCEPT_ID]: {
+    concept: potenciasConcept,
+    lesson: potenciasLesson,
+    templateIds: ["POWER_EVAL", "ROOT_EVAL", "POWER_PRODUCT"],
+    tone: "coral",
+    icon: Superscript,
+  },
 };
 
 /** Conceptos jugables en orden de aparición. */
-export const PLAYABLE_ORDER = [ENTEROS_CONCEPT_ID, ORDEN_CONCEPT_ID, FRACCIONES_CONCEPT_ID];
+export const PLAYABLE_ORDER = [
+  ENTEROS_CONCEPT_ID,
+  ORDEN_CONCEPT_ID,
+  FRACCIONES_CONCEPT_ID,
+  POTENCIAS_CONCEPT_ID,
+];
 
 export function getPlayable(conceptId: string): PlayableConcept | undefined {
   return PLAYABLE[conceptId];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Check, X, BookOpen } from "lucide-react";
 import type { GeneratedExercise } from "@/domain/exercises";
@@ -24,6 +24,17 @@ export function FeedbackSheet({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [showSteps, setShowSteps] = useState(false);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onContinue();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onContinue]);
 
   useLayoutEffect(() => {
     playSound(correct ? "correct" : "wrong");

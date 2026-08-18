@@ -12,7 +12,7 @@ function useSoundOn() {
   );
 }
 
-export function SoundToggle() {
+export function SoundToggle({ compact = false }: { compact?: boolean }) {
   const on = useSoundOn();
 
   function toggle() {
@@ -25,11 +25,12 @@ export function SoundToggle() {
     <button
       type="button"
       onClick={toggle}
+      title={on ? "Silenciar sonidos" : "Activar sonidos"}
       className="md-state flex items-center gap-2 rounded-full px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
       aria-label={on ? "Silenciar sonidos" : "Activar sonidos"}
     >
       {on ? <Volume2 className="h-[18px] w-[18px]" /> : <VolumeX className="h-[18px] w-[18px]" />}
-      {on ? "Sonido" : "Silenciado"}
+      {!compact && (on ? "Sonido" : "Silenciado")}
     </button>
   );
 }

@@ -2,12 +2,18 @@ import { createRng, seedFromString } from "@/lib/rng";
 import { fractionTemplates } from "./fractions";
 import { integerTemplates } from "./integers";
 import { orderOpsTemplates } from "./order-ops";
+import { powerTemplates } from "./powers";
 import type { ExerciseTemplate, GeneratedExercise } from "./types";
 
 export * from "./types";
 export { fractionTemplates } from "./fractions";
 
-const ALL_TEMPLATES = [...fractionTemplates, ...integerTemplates, ...orderOpsTemplates];
+const ALL_TEMPLATES = [
+  ...fractionTemplates,
+  ...integerTemplates,
+  ...orderOpsTemplates,
+  ...powerTemplates,
+];
 
 /** Todos los templates registrados, indexados por id. */
 export const TEMPLATES: Record<string, ExerciseTemplate> = Object.fromEntries(

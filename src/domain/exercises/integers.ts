@@ -141,8 +141,86 @@ export const integerCompareTemplate: ExerciseTemplate = {
   },
 };
 
+/* INTEGER_SUBTRACT — resta con signo -------------------------------------- */
+export const integerSubtractTemplate: ExerciseTemplate = {
+  id: "INTEGER_SUBTRACT",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "easy",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const a = rng.int(-12, 12);
+    let b = rng.int(-12, 12);
+    while (b === 0) b = rng.int(-12, 12);
+    const answer = a - b;
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "easy",
+      instruction: "Restá los números enteros (cuidado con los signos).",
+      promptLatex: `${a} - ${sign(b)}`,
+      promptText: `${a} - (${b})`,
+      correctAnswerDisplay: String(answer),
+      validate: (ans) => validateNumeric(ans, answer, 0),
+      classifyError: (ans): ErrorCategory[] => {
+        const v = Number(ans.replace(",", "."));
+        if (v === a + b) return ["SIGN_ERROR"];
+        return ["ARITHMETIC_SLIP"];
+      },
+      hints: [
+        "Restar un negativo es sumar: a − (−b) = a + b.",
+        b < 0 ? `Como restás un negativo, en realidad sumás: ${a} + ${Math.abs(b)}.` : `Es una resta común: ${a} − ${b}.`,
+        `El resultado es ${answer}.`,
+      ],
+      steps: [
+        { latex: `${a} - ${sign(b)} = ${a} ${b < 0 ? "+" : "-"} ${Math.abs(b)}`, note: "Reescribimos según el signo." },
+        { latex: `= ${answer}`, note: "Operamos." },
+      ],
+    };
+  },
+};
+
+/* INTEGER_TRIPLE — a + b - c ---------------------------------------------- */
+export const integerTripleTemplate: ExerciseTemplate = {
+  id: "INTEGER_TRIPLE",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "medium",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const a = rng.int(-9, 9);
+    const b = rng.int(-9, 9);
+    const c = rng.int(-9, 9);
+    const answer = a + b - c;
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "medium",
+      instruction: "Resolvé de izquierda a derecha, con cuidado en los signos.",
+      promptLatex: `${a} + ${sign(b)} - ${sign(c)}`,
+      promptText: `${a} + (${b}) - (${c})`,
+      correctAnswerDisplay: String(answer),
+      validate: (ans) => validateNumeric(ans, answer, 0),
+      classifyError: (): ErrorCategory[] => ["SIGN_ERROR"],
+      hints: [
+        "Sumar un negativo es restar; restar un negativo es sumar. Operá de a dos.",
+        `${a} + ${sign(b)} = ${a + b}.`,
+        `${a + b} - ${sign(c)} = ${answer}.`,
+      ],
+      steps: [
+        { latex: `${a} + ${sign(b)} = ${a + b}`, note: "Primer paso." },
+        { latex: `${a + b} - ${sign(c)} = ${answer}`, note: "Segundo paso." },
+      ],
+    };
+  },
+};
+
 export const integerTemplates: ExerciseTemplate[] = [
   integerAddTemplate,
+  integerSubtractTemplate,
   integerMultTemplate,
+  integerTripleTemplate,
   integerCompareTemplate,
 ];

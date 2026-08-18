@@ -128,8 +128,51 @@ export const powerProductTemplate: ExerciseTemplate = {
   },
 };
 
+/* POWER_NEG_BASE — (-b)^n -------------------------------------------------- */
+export const powerNegBaseTemplate: ExerciseTemplate = {
+  id: "POWER_NEG_BASE",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "medium",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const base = rng.int(2, 5);
+    const exp = rng.int(2, 3);
+    const answer = Math.pow(-base, exp);
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "medium",
+      instruction: "Resolvé la potencia (atención al signo).",
+      promptLatex: `(-${base})^{${exp}}`,
+      promptText: `(-${base})^${exp}`,
+      correctAnswerDisplay: String(answer),
+      validate: (ans) => validateNumeric(ans, answer, 0),
+      classifyError: (ans): ErrorCategory[] => {
+        const v = Number(ans.replace(",", "."));
+        if (v === -answer) return ["SIGN_ERROR"];
+        return ["ARITHMETIC_SLIP"];
+      },
+      hints: [
+        "Una base negativa elevada a exponente par da positivo; a exponente impar, negativo.",
+        `${exp % 2 === 0 ? "El exponente es par: el resultado es positivo." : "El exponente es impar: el resultado es negativo."}`,
+        `(-${base})^${exp} = ${answer}.`,
+      ],
+      steps: [
+        {
+          latex: `(-${base})^{${exp}} = ${Array(exp).fill(`(-${base})`).join(" \\times ")}`,
+          note: "Multiplicamos la base por sí misma.",
+        },
+        { latex: `= ${answer}`, note: exp % 2 === 0 ? "Exponente par → positivo." : "Exponente impar → negativo." },
+      ],
+    };
+  },
+};
+
 export const powerTemplates: ExerciseTemplate[] = [
   powerEvalTemplate,
   rootEvalTemplate,
+  powerNegBaseTemplate,
   powerProductTemplate,
 ];

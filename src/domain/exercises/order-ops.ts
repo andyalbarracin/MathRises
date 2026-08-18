@@ -128,8 +128,93 @@ export const orderStepTemplate: ExerciseTemplate = {
   },
 };
 
+/* ORDER_DIVISION — a + b ÷ c ---------------------------------------------- */
+export const orderDivisionTemplate: ExerciseTemplate = {
+  id: "ORDER_DIVISION",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "easy",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const c = rng.int(2, 6);
+    const q = rng.int(2, 6);
+    const b = c * q; // divisible ⇒ resultado entero
+    const a = rng.int(2, 12);
+    const answer = a + q;
+    const wrong = Math.round((a + b) / c);
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "easy",
+      instruction: "Resolvé respetando el orden de operaciones.",
+      promptLatex: `${a} + ${b} \\div ${c}`,
+      promptText: `${a} + ${b} ÷ ${c}`,
+      correctAnswerDisplay: String(answer),
+      validate: (ans) => validateNumeric(ans, answer, 0),
+      classifyError: (ans): ErrorCategory[] => {
+        const v = Number(ans.replace(",", "."));
+        if (v === wrong) return ["ORDER_OF_OPERATIONS"];
+        return ["ARITHMETIC_SLIP"];
+      },
+      hints: [
+        "La división va antes que la suma. No se resuelve de izquierda a derecha.",
+        `Calculá ${b} ÷ ${c} antes de sumar ${a}.`,
+        `${b} ÷ ${c} = ${q}, y ${a} + ${q} = ${answer}.`,
+      ],
+      steps: [
+        { latex: `${a} + ${b} \\div ${c} = ${a} + ${q}`, note: "Primero la división." },
+        { latex: `= ${answer}`, note: "Luego la suma." },
+      ],
+    };
+  },
+};
+
+/* ORDER_TWO_OPS — a × b - c ---------------------------------------------- */
+export const orderTwoOpsTemplate: ExerciseTemplate = {
+  id: "ORDER_TWO_OPS",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "medium",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const a = rng.int(2, 9);
+    const b = rng.int(2, 9);
+    const c = rng.int(1, 15);
+    const answer = a * b - c;
+    const wrong = a * (b - c);
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "medium",
+      instruction: "Resolvé respetando el orden de operaciones.",
+      promptLatex: `${a} \\times ${b} - ${c}`,
+      promptText: `${a} × ${b} - ${c}`,
+      correctAnswerDisplay: String(answer),
+      validate: (ans) => validateNumeric(ans, answer, 0),
+      classifyError: (ans): ErrorCategory[] => {
+        const v = Number(ans.replace(",", "."));
+        if (v === wrong) return ["ORDER_OF_OPERATIONS"];
+        return ["ARITHMETIC_SLIP"];
+      },
+      hints: [
+        "Primero la multiplicación, después la resta.",
+        `Calculá ${a} × ${b} y recién después restá ${c}.`,
+        `${a} × ${b} = ${a * b}, y ${a * b} - ${c} = ${answer}.`,
+      ],
+      steps: [
+        { latex: `${a} \\times ${b} - ${c} = ${a * b} - ${c}`, note: "Primero la multiplicación." },
+        { latex: `= ${answer}`, note: "Después la resta." },
+      ],
+    };
+  },
+};
+
 export const orderOpsTemplates: ExerciseTemplate[] = [
   orderBasicTemplate,
+  orderDivisionTemplate,
   orderParenTemplate,
+  orderTwoOpsTemplate,
   orderStepTemplate,
 ];

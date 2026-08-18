@@ -264,8 +264,101 @@ export const fractionErrorSpottingTemplate: ExerciseTemplate = {
   },
 };
 
+/* FRACTION_SUBTRACT — resta con distinto denominador ---------------------- */
+export const fractionSubtractTemplate: ExerciseTemplate = {
+  id: "FRACTION_SUBTRACT",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "medium",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const b = rng.int(2, 8);
+    let d = rng.int(2, 8);
+    while (d === b) d = rng.int(2, 8);
+    const a = rng.int(2, b + 3);
+    const c = rng.int(1, d + 2);
+    const f1: Fraction = { n: a, d: b };
+    const f2: Fraction = { n: c, d: d };
+    const answer = simplify({ n: f1.n * f2.d - f2.n * f1.d, d: f1.d * f2.d });
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "medium",
+      instruction: "Resolvé la resta y escribí el resultado en su mínima expresión.",
+      promptLatex: `${toLatex(f1)} - ${toLatex(f2)}`,
+      promptText: `${a}/${b} - ${c}/${d}`,
+      correctAnswerDisplay: `${answer.n}/${answer.d}`,
+      validate: (ans) => validateFraction(ans, answer, true),
+      classifyError: (ans): ErrorCategory[] => {
+        const p = parseFraction(ans);
+        if (!p) return ["UNKNOWN"];
+        if (fractionsEqual(p, answer)) return ["FRACTION_NOT_SIMPLIFIED"];
+        return ["FRACTION_COMMON_DENOMINATOR"];
+      },
+      hints: [
+        "Para restar fracciones también necesitás un denominador común: no se restan los denominadores.",
+        `Un denominador común es ${lcm(b, d)}. Convertí ambas antes de restar.`,
+        `${a}/${b} = ${a * (lcm(b, d) / b)}/${lcm(b, d)} y ${c}/${d} = ${c * (lcm(b, d) / d)}/${lcm(b, d)}. Restá los numeradores.`,
+      ],
+      steps: [
+        { latex: `\\text{m.c.m.}(${b}, ${d}) = ${lcm(b, d)}`, note: "Denominador común." },
+        {
+          latex: `= \\dfrac{${a * (lcm(b, d) / b)} - ${c * (lcm(b, d) / d)}}{${lcm(b, d)}}`,
+          note: "Restamos los numeradores.",
+        },
+        { latex: `= ${toLatex(answer)}`, note: "Simplificamos." },
+      ],
+    };
+  },
+};
+
+/* FRACTION_MULTIPLY — producto de fracciones ------------------------------ */
+export const fractionMultiplyTemplate: ExerciseTemplate = {
+  id: "FRACTION_MULTIPLY",
+  conceptId: CONCEPT_ID,
+  cardType: "NUMERIC_INPUT",
+  difficulty: "easy",
+  generate(rng: Rng, index: number): GeneratedExercise {
+    const a = rng.int(1, 6);
+    const b = rng.int(2, 7);
+    const c = rng.int(1, 6);
+    const d = rng.int(2, 7);
+    const answer = simplify({ n: a * c, d: b * d });
+    return {
+      id: `${this.id}-${index}`,
+      conceptId: CONCEPT_ID,
+      templateId: this.id,
+      cardType: "NUMERIC_INPUT",
+      difficulty: "easy",
+      instruction: "Multiplicá las fracciones (mínima expresión).",
+      promptLatex: `${toLatex({ n: a, d: b })} \\times ${toLatex({ n: c, d: d })}`,
+      promptText: `${a}/${b} × ${c}/${d}`,
+      correctAnswerDisplay: `${answer.n}/${answer.d}`,
+      validate: (ans) => validateFraction(ans, answer, true),
+      classifyError: (ans): ErrorCategory[] => {
+        const p = parseFraction(ans);
+        if (!p) return ["UNKNOWN"];
+        if (fractionsEqual(p, answer)) return ["FRACTION_NOT_SIMPLIFIED"];
+        return ["ARITHMETIC_SLIP"];
+      },
+      hints: [
+        "Para multiplicar fracciones se multiplican los numeradores entre sí y los denominadores entre sí. No hace falta denominador común.",
+        `Numeradores: ${a} × ${c} = ${a * c}. Denominadores: ${b} × ${d} = ${b * d}.`,
+        `Queda ${a * c}/${b * d}, que simplificado es ${toLatex(answer)}.`,
+      ],
+      steps: [
+        { latex: `${toLatex({ n: a, d: b })} \\times ${toLatex({ n: c, d: d })} = \\dfrac{${a * c}}{${b * d}}`, note: "Multiplicamos en línea." },
+        { latex: `= ${toLatex(answer)}`, note: "Simplificamos." },
+      ],
+    };
+  },
+};
+
 export const fractionTemplates: ExerciseTemplate[] = [
   fractionAddTemplate,
+  fractionSubtractTemplate,
+  fractionMultiplyTemplate,
   fractionSimplifyTemplate,
   fractionEquivalenceTemplate,
   fractionErrorSpottingTemplate,

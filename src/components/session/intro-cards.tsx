@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Katex } from "@/components/math/katex";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/reveal";
-import { Mascot } from "@/components/art/mascot";
+import { MascotFull } from "@/components/art/mascot";
 import { highlightGlossary } from "./glossary";
 
 /** Une una lista en prosa: ["a","b","c"] → "a, b y c". */
@@ -52,7 +52,7 @@ export function ExplanationCard({
     <Reveal stagger>
       {materials && materials.length > 0 && (
         <div className="mb-5 flex items-center gap-2.5">
-          <Mascot expression="wink" size={56} className="shrink-0" />
+          <MascotFull pose="walk" size={76} className="shrink-0" />
           <div className="relative rounded-2xl rounded-bl-md border border-c-amber/30 bg-c-amber-soft px-4 py-3">
             <p className="text-[15px] leading-relaxed text-ink">
               Para esta lección tené a mano{" "}

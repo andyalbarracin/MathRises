@@ -51,7 +51,7 @@ export function SessionSummary({ data }: { data: SummaryData }) {
   return (
     <div className="mx-auto w-full max-w-md text-center" data-testid="summary">
       <div className="mx-auto -mb-2 w-fit">
-        <MascotFull size={150} />
+        <MascotFull pose="cheer" size={150} />
       </div>
       <p className="font-display text-2xl text-ink">{passive ? "¡Buen repaso!" : "¡Sesión completa!"}</p>
 

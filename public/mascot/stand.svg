@@ -1,41 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 160" width="110" height="160">
-  <g stroke="#2a2833" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <!-- cola -->
-    <path d="M74 108 q16 0 14 -16" fill="#ffffff"/>
-    <!-- piernas y pies -->
-    <path d="M45 116 Q43 134 45 146 L53 146 Q54 132 53 114 Z" fill="#ffffff"/>
-    <path d="M65 116 Q67 134 65 146 L57 146 Q56 132 57 114 Z" fill="#ffffff"/>
-    <ellipse cx="44" cy="148" rx="8.5" ry="5" fill="#ffffff"/>
-    <ellipse cx="66" cy="148" rx="8.5" ry="5" fill="#ffffff"/>
-    <!-- brazos -->
-    <path d="M40 74 Q29 86 30 102" fill="none" stroke-width="6"/>
-    <ellipse cx="30" cy="103" rx="5.2" ry="5" fill="#ffffff"/>
-    <path d="M70 74 Q83 68 87 55" fill="none" stroke-width="6"/>
-    <ellipse cx="88" cy="53" rx="5.2" ry="5" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 165" width="150" height="165">
+  <g stroke="#2a2833" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="#ffffff">
+    <!-- pierna trasera -->
+    <path d="M60 104 Q54 122 50 138 L60 140 Q64 122 66 108 Z"/>
+    <ellipse cx="52" cy="141" rx="10" ry="5"/>
+    <!-- brazo trasero balanceando -->
+    <path d="M58 74 Q47 82 43 95" fill="none" stroke-width="6"/>
+    <ellipse cx="42" cy="97" rx="5" ry="5"/>
     <!-- torso -->
-    <path d="M38 66 Q32 96 41 120 Q55 126 69 120 Q78 96 72 66 Z" fill="#ffffff"/>
-    <!-- orejas -->
-    <path d="M38 34 Q22 42 26 62 Q36 64 42 50 Z" fill="#211f2a"/>
-    <path d="M72 34 Q88 42 84 62 Q74 64 68 50 Z" fill="#211f2a"/>
-    <!-- collar -->
-    <path d="M40 64 Q55 70 70 64" fill="none" stroke="#6750a4" stroke-width="6"/>
-    <circle cx="55" cy="69" r="5" fill="#6750a4" stroke="#2a2833" stroke-width="1.6"/>
-    <!-- cabeza -->
-    <circle cx="55" cy="42" r="20" fill="#ffffff"/>
-    <path d="M60 30 Q73 30 71 44 Q64 50 58 43 Q56 33 60 30 Z" fill="#211f2a" stroke="none"/>
-    <ellipse cx="55" cy="50" rx="12" ry="9" fill="#ffffff"/>
-    <ellipse cx="55" cy="47" rx="4" ry="3.2" fill="#211f2a" stroke="none"/>
+    <path d="M52 60 Q45 86 54 106 Q68 112 74 104 Q78 82 70 62 Z"/>
+    <!-- pierna delantera -->
+    <path d="M68 104 Q76 120 82 136 L74 140 Q66 124 62 108 Z"/>
+    <ellipse cx="86" cy="138" rx="10" ry="5"/>
   </g>
-  <circle cx="46" cy="41" r="2.9" fill="#211f2a"/>
-  <circle cx="47" cy="40" r="1" fill="#ffffff"/>
-  <circle cx="64" cy="41" r="2.9" fill="#211f2a"/>
-  <path d="M50 55 q5 4 10 0" stroke="#2a2833" stroke-width="2.1" fill="none" stroke-linecap="round"/>
-  <!-- casco de ingeniero -->
-  <g stroke="#2a2833" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M28 33 Q55 39 82 33 Q83 29 78 29.5 Q55 34 32 29.5 Q27 29 28 33 Z" fill="#e0901c"/>
-    <path d="M34 31 Q35 13 55 12 Q75 13 76 31 Q55 35 34 31 Z" fill="#f6b62b"/>
-    <path d="M47 15 Q46 24 45.5 30" fill="none" stroke-width="1.5" opacity="0.4"/>
-    <path d="M63 15 Q64 24 64.5 30" fill="none" stroke-width="1.5" opacity="0.4"/>
-    <ellipse cx="55" cy="13.5" rx="4.4" ry="2.6" fill="#f6b62b"/>
+  <!-- corbata -->
+  <path d="M62 62 L58 68 L62 88 L66 68 Z" fill="#d1495b" stroke="#2a2833" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M59 61 h6 l-1 5 h-4 z" fill="#b83a4b" stroke="#2a2833" stroke-width="1.6"/>
+  <!-- maletin -->
+  <g stroke="#2a2833" stroke-width="2.2" stroke-linejoin="round">
+    <rect x="74" y="96" width="26" height="18" rx="3" fill="#8a5a2b"/>
+    <path d="M80 96 q7 -7 14 0" fill="none" stroke-width="2.4"/>
+    <line x1="74" y1="104" x2="100" y2="104"/>
+    <rect x="84" y="101" width="6" height="5" rx="1" fill="#6f4520"/>
+  </g>
+  <!-- brazo delantero con el maletin -->
+  <path d="M66 72 Q78 82 84 95" fill="none" stroke="#2a2833" stroke-width="6" stroke-linecap="round"/>
+  <g stroke="#2a2833" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="#ffffff">
+    <!-- oreja caida -->
+    <path d="M46 36 Q30 42 33 62 Q44 64 51 48 Z" fill="#211f2a"/>
+    <!-- cabeza -->
+    <circle cx="53" cy="44" r="19"/>
+    <!-- hocico -->
+    <path d="M63 40 Q83 40 83 52 Q83 61 70 60 Q62 57 61 50 Z"/>
+  </g>
+  <!-- nariz, ojo, boca -->
+  <ellipse cx="82" cy="49" rx="4.2" ry="3.4" fill="#211f2a"/>
+  <circle cx="60" cy="42" r="3.1" fill="#211f2a"/>
+  <circle cx="61" cy="41" r="1" fill="#ffffff"/>
+  <path d="M70 55 q6 3 10 -1" stroke="#2a2833" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- casco -->
+  <g stroke="#2a2833" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M31 34 Q54 41 78 32 Q79 27 73 27.5 Q54 33 37 27.5 Q31 27 31 34 Z" fill="#e0901c"/>
+    <path d="M37 32 Q38 14 56 14 Q73 15 74 32 Q56 37 37 32 Z" fill="#f6b62b"/>
+    <path d="M48 16 Q47 25 46.5 31" fill="none" stroke-width="1.5" opacity="0.4"/>
+    <path d="M64 16 Q65 25 65.5 31" fill="none" stroke-width="1.5" opacity="0.4"/>
+    <ellipse cx="56" cy="15" rx="4.4" ry="2.6" fill="#f6b62b"/>
   </g>
 </svg>

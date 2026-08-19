@@ -7,7 +7,7 @@ import { Clock, CircleHelp } from "lucide-react";
 import type { MockExamResult } from "@/domain/types";
 import { mentorClosing } from "@/content/mentors";
 import { MentorMessage } from "@/components/mentors/mentor-avatar";
-import { Mascot } from "@/components/art/mascot";
+import { MascotFull } from "@/components/art/mascot";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
@@ -42,7 +42,7 @@ export function MockResults({ result }: { result: MockExamResult }) {
   return (
     <div className="mx-auto w-full max-w-md text-center">
       <div className="mx-auto -mb-2 w-fit">
-        <Mascot tone="violet" expression={accuracy >= 0.6 ? "cheer" : "think"} size={110} />
+        <MascotFull pose={accuracy >= 0.6 ? "cheer" : "walk"} size={140} />
       </div>
       <p className="font-display text-2xl text-ink">Simulacro completo</p>
       <p className="text-sm text-ink-muted">{result.title}</p>

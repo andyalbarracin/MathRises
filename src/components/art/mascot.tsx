@@ -35,17 +35,33 @@ export function Mascot({
   );
 }
 
+/** Poses de cuerpo entero (perro ingeniero). Archivos intercambiables en public/mascot. */
+export type FullPose = "walk" | "cheer";
+const FULL_POSES: Record<FullPose, { src: string; w: number; h: number }> = {
+  walk: { src: "/mascot/stand.svg", w: 150, h: 165 }, // caminando con maletín
+  cheer: { src: "/mascot/cheer-full.svg", w: 130, h: 165 }, // festejando
+};
+
 /**
- * Mascota de cuerpo entero (perro ingeniero parado), para pantallas grandes:
- * hero, onboarding y cierre de sesión. `size` es la altura; el asset conserva
- * su relación 110×160 (archivo intercambiable en public/mascot/stand.svg).
+ * Mascota de cuerpo entero (perro ingeniero: casco, corbata, maletín), para
+ * pantallas grandes: hero, onboarding, cierre de sesión y avisos. `size` es la
+ * altura; cada pose conserva su relación de aspecto.
  */
-export function MascotFull({ size = 160, className }: { size?: number; className?: string }) {
+export function MascotFull({
+  pose = "walk",
+  size = 160,
+  className,
+}: {
+  pose?: FullPose;
+  size?: number;
+  className?: string;
+}) {
+  const p = FULL_POSES[pose];
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/mascot/stand.svg"
-      width={Math.round((size * 110) / 160)}
+      src={p.src}
+      width={Math.round((size * p.w) / p.h)}
       height={size}
       className={className}
       alt="Mascota de Mateicos Matemáticos"

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 165" width="130" height="165">
+  <g stroke="#2a2833" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="#ffffff">
+    <!-- piernas -->
+    <path d="M54 106 Q50 126 52 142 L60 142 Q61 126 60 108 Z"/>
+    <ellipse cx="53" cy="143" rx="9.5" ry="5"/>
+    <path d="M68 108 Q72 126 70 142 L78 142 Q79 126 74 108 Z"/>
+    <ellipse cx="77" cy="143" rx="9.5" ry="5"/>
+    <!-- brazos arriba -->
+    <path d="M56 70 Q45 58 44 44" fill="none" stroke-width="6"/>
+    <ellipse cx="43" cy="43" rx="5" ry="5"/>
+    <path d="M72 70 Q84 58 86 44" fill="none" stroke-width="6"/>
+    <ellipse cx="87" cy="43" rx="5" ry="5"/>
+    <!-- torso -->
+    <path d="M53 60 Q47 86 55 108 Q65 113 74 108 Q80 86 73 60 Z"/>
+  </g>
+  <!-- corbata -->
+  <path d="M63 62 L59 68 L63 88 L67 68 Z" fill="#d1495b" stroke="#2a2833" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M60 61 h6 l-1 5 h-4 z" fill="#b83a4b" stroke="#2a2833" stroke-width="1.6"/>
+  <g stroke="#2a2833" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="#ffffff">
+    <!-- oreja -->
+    <path d="M46 36 Q30 42 33 62 Q44 64 51 48 Z" fill="#211f2a"/>
+    <!-- cabeza -->
+    <circle cx="53" cy="44" r="19"/>
+    <!-- hocico -->
+    <path d="M63 40 Q83 40 83 52 Q83 61 70 60 Q62 57 61 50 Z"/>
+  </g>
+  <ellipse cx="82" cy="49" rx="4.2" ry="3.4" fill="#211f2a"/>
+  <!-- cara: festejo -->
+  <path d="M56 43 q4 -4 8 0" stroke="#2a2833" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+  <path d="M69 54 q7 8 13 0 q-6 4 -13 0 Z" fill="#211f2a"/>
+  <path d="M76 58 q0 4 3 4 q3 0 3 -3" fill="#f4a6b2" stroke="#2a2833" stroke-width="1.2"/>
+  <!-- casco -->
+  <g stroke="#2a2833" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M31 34 Q54 41 78 32 Q79 27 73 27.5 Q54 33 37 27.5 Q31 27 31 34 Z" fill="#e0901c"/>
+    <path d="M37 32 Q38 14 56 14 Q73 15 74 32 Q56 37 37 32 Z" fill="#f6b62b"/>
+    <path d="M48 16 Q47 25 46.5 31" fill="none" stroke-width="1.5" opacity="0.4"/>
+    <path d="M64 16 Q65 25 65.5 31" fill="none" stroke-width="1.5" opacity="0.4"/>
+    <ellipse cx="56" cy="15" rx="4.4" ry="2.6" fill="#f6b62b"/>
+  </g>
+</svg>

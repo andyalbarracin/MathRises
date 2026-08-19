@@ -8,6 +8,7 @@ import type { Profile } from "@/domain/types";
 import { daysUntil } from "@/lib/date";
 import { TARGET_DATE } from "@/content/roadmap";
 import { PageHeader } from "@/components/ui/page-header";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import { AccountCard } from "@/components/cloud/account-card";
 import { ThemeToggle } from "@/components/nav/theme-toggle";
 import { SoundToggle } from "@/components/nav/sound-toggle";
@@ -81,7 +82,7 @@ export function ProfileView() {
   }
 
   if (profile === undefined) {
-    return <div className="mx-auto h-64 max-w-2xl animate-pulse rounded-3xl bg-surface-2/60" />;
+    return <PageSkeleton maxW="max-w-2xl" cards={3} />;
   }
 
   const days = daysUntil(targetDate);

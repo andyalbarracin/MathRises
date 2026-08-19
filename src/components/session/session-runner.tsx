@@ -29,6 +29,7 @@ import { ExerciseView } from "./exercise-view";
 import { FeedbackSheet } from "./feedback-sheet";
 import { ExplanationCard, WorkedExampleCard } from "./intro-cards";
 import { SessionSummary, type SummaryData } from "./session-summary";
+import { LoadingState } from "@/components/ui/states";
 
 type Phase = "loading" | "active" | "feedback" | "summary";
 
@@ -267,7 +268,7 @@ export function SessionRunner({
       </CenterScreen>
     );
   }
-  if (phase === "loading") return <CenterScreen>Preparando tu sesión…</CenterScreen>;
+  if (phase === "loading") return <LoadingState label="Preparando tu sesión" />;
   if (phase === "summary" && summary) {
     return (
       <CenterScreen>

@@ -13,6 +13,7 @@ import { PLAYABLE, PLAYABLE_ORDER } from "@/content/concepts";
 import { SESSION_TYPES, SESSION_TYPE_ORDER } from "@/content/session-types";
 import { daysUntil, todayStr } from "@/lib/date";
 import { useToast } from "@/components/ui/toast";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import { Tile } from "@/components/ui/tile";
 import { Badge } from "@/components/ui/badge";
 import { MascotFull } from "@/components/art/mascot";
@@ -83,7 +84,7 @@ export function TodayView() {
   }, [router, toast]);
 
   if (!state) {
-    return <div className="mx-auto h-64 max-w-3xl animate-pulse rounded-3xl bg-surface-2/60" />;
+    return <PageSkeleton />;
   }
 
   const { progress, masteries, dueReviews, name } = state;

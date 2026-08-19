@@ -12,6 +12,7 @@ import { todayStr } from "@/lib/date";
 import { playSound } from "@/lib/sound";
 import { ExerciseView } from "@/components/session/exercise-view";
 import { Button } from "@/components/ui/button";
+import { LoadingState } from "@/components/ui/states";
 import { MockResults } from "./mock-results";
 
 type Phase = "loading" | "active" | "results";
@@ -135,7 +136,7 @@ export function MockRunner({ examId }: { examId: string }) {
       </CenterScreen>
     );
   }
-  if (phase === "loading") return <CenterScreen>Preparando el simulacro…</CenterScreen>;
+  if (phase === "loading") return <LoadingState label="Preparando el simulacro" />;
   if (phase === "results" && result) {
     return (
       <CenterScreen>

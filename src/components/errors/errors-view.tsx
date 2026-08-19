@@ -5,6 +5,7 @@ import { TriangleAlert, CircleCheck } from "lucide-react";
 import { repository } from "@/data/local/repository";
 import { ERROR_LABELS, type ErrorCategory, type ErrorRecord } from "@/domain/types";
 import { PageHeader, EmptyState } from "@/components/ui/page-header";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import { Katex } from "@/components/math/katex";
 
 function labelFor(cat: ErrorCategory): string {
@@ -25,7 +26,7 @@ export function ErrorsView() {
   }, []);
 
   if (!errors) {
-    return <div className="h-32 animate-pulse rounded-2xl border border-border bg-surface/50" />;
+    return <PageSkeleton maxW="max-w-2xl" cards={3} />;
   }
 
   // Agregación por categoría principal.

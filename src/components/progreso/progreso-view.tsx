@@ -41,6 +41,7 @@ import { MODULE_LABEL } from "@/content/mock-exams";
 import { ROADMAP, TARGET_DATE } from "@/content/roadmap";
 import { daysUntil, todayStr } from "@/lib/date";
 import { PageHeader, EmptyState } from "@/components/ui/page-header";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -108,7 +109,7 @@ export function ProgresoView() {
   }, []);
 
   if (!data) {
-    return <div className="mx-auto h-64 max-w-3xl animate-pulse rounded-3xl bg-surface-2/60" />;
+    return <PageSkeleton />;
   }
 
   const { progress, masteries, diagnostic, reviews, profile, now } = data;

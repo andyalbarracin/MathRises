@@ -11,7 +11,7 @@ import { TARGET_DATE } from "@/content/roadmap";
 import { daysUntil } from "@/lib/date";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/nav/brand-mark";
-import { Mascot } from "@/components/art/mascot";
+import { Mascot, MascotFull } from "@/components/art/mascot";
 import { HillsScene } from "@/components/art/scenes";
 import { Reveal } from "@/components/motion/reveal";
 import { DiagnosticRunner } from "./diagnostic-runner";
@@ -167,8 +167,8 @@ function MetaStep({
       <Reveal className="mx-auto w-full max-w-md text-center" stagger>
         <div className="relative mx-auto mb-2 h-40 w-full max-w-xs overflow-hidden rounded-3xl">
           <HillsScene className="absolute inset-0 h-full w-full" />
-          <div className="absolute inset-x-0 bottom-1 grid place-items-center">
-            <Mascot tone="violet" expression="cheer" symbol="+" size={110} />
+          <div className="absolute inset-x-0 bottom-0 grid place-items-center">
+            <MascotFull size={150} />
           </div>
         </div>
         <h1 className="mt-4 font-display text-3xl text-ink md:text-4xl">

@@ -15,7 +15,7 @@ import { daysUntil, todayStr } from "@/lib/date";
 import { useToast } from "@/components/ui/toast";
 import { Tile } from "@/components/ui/tile";
 import { Badge } from "@/components/ui/badge";
-import { Mascot } from "@/components/art/mascot";
+import { MascotFull } from "@/components/art/mascot";
 import { Flame } from "@/components/art/scenes";
 
 interface State {
@@ -153,7 +153,7 @@ export function TodayView() {
                 </span>
               </div>
               <div className="hidden shrink-0 sm:block">
-                <Mascot expression="cheer" size={116} />
+                <MascotFull size={140} />
               </div>
             </div>
           </Link>

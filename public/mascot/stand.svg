@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 160" width="110" height="160">
+  <g stroke="#2a2833" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- cola -->
+    <path d="M74 108 q16 0 14 -16" fill="#ffffff"/>
+    <!-- piernas y pies -->
+    <path d="M45 116 Q43 134 45 146 L53 146 Q54 132 53 114 Z" fill="#ffffff"/>
+    <path d="M65 116 Q67 134 65 146 L57 146 Q56 132 57 114 Z" fill="#ffffff"/>
+    <ellipse cx="44" cy="148" rx="8.5" ry="5" fill="#ffffff"/>
+    <ellipse cx="66" cy="148" rx="8.5" ry="5" fill="#ffffff"/>
+    <!-- brazos -->
+    <path d="M40 74 Q29 86 30 102" fill="none" stroke-width="6"/>
+    <ellipse cx="30" cy="103" rx="5.2" ry="5" fill="#ffffff"/>
+    <path d="M70 74 Q83 68 87 55" fill="none" stroke-width="6"/>
+    <ellipse cx="88" cy="53" rx="5.2" ry="5" fill="#ffffff"/>
+    <!-- torso -->
+    <path d="M38 66 Q32 96 41 120 Q55 126 69 120 Q78 96 72 66 Z" fill="#ffffff"/>
+    <!-- orejas -->
+    <path d="M38 34 Q22 42 26 62 Q36 64 42 50 Z" fill="#211f2a"/>
+    <path d="M72 34 Q88 42 84 62 Q74 64 68 50 Z" fill="#211f2a"/>
+    <!-- collar -->
+    <path d="M40 64 Q55 70 70 64" fill="none" stroke="#6750a4" stroke-width="6"/>
+    <circle cx="55" cy="69" r="5" fill="#6750a4" stroke="#2a2833" stroke-width="1.6"/>
+    <!-- cabeza -->
+    <circle cx="55" cy="42" r="20" fill="#ffffff"/>
+    <path d="M60 30 Q73 30 71 44 Q64 50 58 43 Q56 33 60 30 Z" fill="#211f2a" stroke="none"/>
+    <ellipse cx="55" cy="50" rx="12" ry="9" fill="#ffffff"/>
+    <ellipse cx="55" cy="47" rx="4" ry="3.2" fill="#211f2a" stroke="none"/>
+  </g>
+  <circle cx="46" cy="41" r="2.9" fill="#211f2a"/>
+  <circle cx="47" cy="40" r="1" fill="#ffffff"/>
+  <circle cx="64" cy="41" r="2.9" fill="#211f2a"/>
+  <path d="M50 55 q5 4 10 0" stroke="#2a2833" stroke-width="2.1" fill="none" stroke-linecap="round"/>
+  <!-- casco de ingeniero -->
+  <g stroke="#2a2833" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M28 33 Q55 39 82 33 Q83 29 78 29.5 Q55 34 32 29.5 Q27 29 28 33 Z" fill="#e0901c"/>
+    <path d="M34 31 Q35 13 55 12 Q75 13 76 31 Q55 35 34 31 Z" fill="#f6b62b"/>
+    <path d="M47 15 Q46 24 45.5 30" fill="none" stroke-width="1.5" opacity="0.4"/>
+    <path d="M63 15 Q64 24 64.5 30" fill="none" stroke-width="1.5" opacity="0.4"/>
+    <ellipse cx="55" cy="13.5" rx="4.4" ry="2.6" fill="#f6b62b"/>
+  </g>
+</svg>

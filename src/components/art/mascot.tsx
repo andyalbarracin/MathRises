@@ -34,3 +34,22 @@ export function Mascot({
     />
   );
 }
+
+/**
+ * Mascota de cuerpo entero (perro ingeniero parado), para pantallas grandes:
+ * hero, onboarding y cierre de sesión. `size` es la altura; el asset conserva
+ * su relación 110×160 (archivo intercambiable en public/mascot/stand.svg).
+ */
+export function MascotFull({ size = 160, className }: { size?: number; className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/mascot/stand.svg"
+      width={Math.round((size * 110) / 160)}
+      height={size}
+      className={className}
+      alt="Mascota de Mateicos Matemáticos"
+      draggable={false}
+    />
+  );
+}

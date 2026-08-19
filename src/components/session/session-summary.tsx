@@ -8,7 +8,7 @@ import { masteryStars, MASTERY_LABEL } from "@/domain/mastery";
 import type { MasteryLevel, SessionType } from "@/domain/types";
 import { mentorClosing } from "@/content/mentors";
 import { MentorMessage } from "@/components/mentors/mentor-avatar";
-import { Mascot } from "@/components/art/mascot";
+import { MascotFull } from "@/components/art/mascot";
 import { Button } from "@/components/ui/button";
 import { playSound } from "@/lib/sound";
 
@@ -51,7 +51,7 @@ export function SessionSummary({ data }: { data: SummaryData }) {
   return (
     <div className="mx-auto w-full max-w-md text-center" data-testid="summary">
       <div className="mx-auto -mb-2 w-fit">
-        <Mascot tone="violet" expression="cheer" symbol="★" size={120} />
+        <MascotFull size={150} />
       </div>
       <p className="font-display text-2xl text-ink">{passive ? "¡Buen repaso!" : "¡Sesión completa!"}</p>
 

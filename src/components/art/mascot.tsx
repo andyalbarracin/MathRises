@@ -6,7 +6,7 @@
  */
 
 export type Tone = "violet" | "blue" | "green" | "amber" | "coral";
-export type Expression = "happy" | "cheer" | "think" | "oops";
+export type Expression = "happy" | "cheer" | "think" | "oops" | "wink";
 
 /** Extensión de los assets de la mascota (svg | png | webp). */
 export const MASCOT_EXT = "svg";
@@ -29,7 +29,7 @@ export function Mascot({
       width={size}
       height={size}
       className={className}
-      alt="Mascota de RiseMath"
+      alt="Mascota de Mateicos Matemáticos"
       draggable={false}
     />
   );

@@ -196,9 +196,11 @@
   --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-fredoka), var(--font-roboto), sans-serif;
 
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 0.75rem);
-  --radius-2xl: calc(var(--radius) + 1.5rem);
+  /* Escala monótona y moderada (M3): 16 → 20 → 24 → 28 px. */
+  --radius-lg: var(--radius); /* 16 */
+  --radius-xl: 1.25rem; /* 20 */
+  --radius-2xl: 1.5rem; /* 24 */
+  --radius-3xl: 1.75rem; /* 28 */
 }
 
 * {

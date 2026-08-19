@@ -175,8 +175,8 @@ function MetaStep({
           Tu camino a Ingeniería empieza acá
         </h1>
         <p className="mx-auto mt-3 max-w-sm text-[15px] leading-relaxed text-ink-muted">
-          RiseMath arma un plan a tu medida para llegar al ingreso de la UNLaM, en sesiones cortas y
-          sostenidas. Sin apuro, con método.
+          Mateicos Matemáticos arma un plan a tu medida para llegar al ingreso de la UNLaM, en
+          sesiones cortas y sostenidas. Sin apuro, con método.
         </p>
         <Button size="lg" className="mt-8 w-full sm:w-auto" onClick={onNext}>
           Empezar

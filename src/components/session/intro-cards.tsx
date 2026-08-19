@@ -10,7 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Katex } from "@/components/math/katex";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion/reveal";
+import { Mascot } from "@/components/art/mascot";
 import { highlightGlossary } from "./glossary";
+
+/** Une una lista en prosa: ["a","b","c"] → "a, b y c". */
+function formatList(items: string[]): string {
+  if (items.length <= 1) return items.join("");
+  return `${items.slice(0, -1).join(", ")} y ${items[items.length - 1]}`;
+}
 
 /** Enter / Espacio para continuar. */
 function useEnterContinue(onContinue: () => void) {
@@ -33,7 +40,7 @@ export function ExplanationCard({
   lesson: LessonContent;
   onContinue: () => void;
 }) {
-  const { explanation, glossary } = lesson;
+  const { explanation, glossary, materials } = lesson;
   const slug = explanation.mentor as MentorSlug;
   const mentor = MENTORS[slug];
   useEnterContinue(onContinue);
@@ -43,6 +50,17 @@ export function ExplanationCard({
 
   return (
     <Reveal stagger>
+      {materials && materials.length > 0 && (
+        <div className="mb-5 flex items-center gap-2.5">
+          <Mascot expression="wink" size={56} className="shrink-0" />
+          <div className="relative rounded-2xl rounded-bl-md border border-c-amber/30 bg-c-amber-soft px-4 py-3">
+            <p className="text-[15px] leading-relaxed text-ink">
+              Para esta lección tené a mano{" "}
+              <span className="font-bold">{formatList(materials)}</span>. 😉
+            </p>
+          </div>
+        </div>
+      )}
       <Badge tone="accent" className="mb-4">
         <BookOpen className="h-3.5 w-3.5" /> Concepto
       </Badge>

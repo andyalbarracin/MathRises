@@ -1,6 +1,6 @@
 {
-  "name": "RiseMath — Ingreso Ingeniería UNLaM",
-  "short_name": "RiseMath",
+  "name": "Mateicos Matemáticos — Ingreso Ingeniería UNLaM",
+  "short_name": "Mateicos",
   "description": "Entrenamiento matemático gamificado para el ingreso a Ingeniería de la UNLaM.",
   "start_url": "/",
   "scope": "/",

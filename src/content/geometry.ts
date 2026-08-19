@@ -35,6 +35,7 @@ export const geoBaseLesson: LessonContent = {
       { latex: "c = \\sqrt{25} = 5", note: "La hipotenusa mide 5." },
     ],
   },
+  materials: ["regla", "compás", "transportador"],
 };
 
 /* ---- Geometría plana (S16) ---- */

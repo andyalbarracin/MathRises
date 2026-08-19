@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -14,6 +14,7 @@ import {
   User,
   PanelLeftClose,
   PanelLeftOpen,
+  MoreHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
@@ -67,9 +68,13 @@ function useCollapsed() {
   );
 }
 
+const MOBILE_PRIMARY = NAV.slice(0, 5);
+const MOBILE_MORE = NAV.slice(5); // Simulacros, Progreso, Perfil
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const collapsed = useCollapsed();
+  const [moreOpen, setMoreOpen] = useState(false);
 
   // La sesión, el onboarding y los simulacros corren a pantalla completa.
   const immersive =
@@ -142,14 +147,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <main className="flex-1 px-5 pb-28 pt-6 md:px-10 md:pb-10 md:pt-10">{children}</main>
         <footer className="hidden border-t border-border px-10 py-6 text-center text-xs text-ink-muted md:block">
-          © {new Date().getFullYear()} RiseMath · Preparación para el ingreso a Ingeniería · Hecho con
-          dedicación.
+          © {new Date().getFullYear()} Mateicos Matemáticos · Preparación para el ingreso a Ingeniería
+          · Hecho con dedicación.
         </footer>
       </div>
 
       {/* Bottom nav mobile */}
       <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-border bg-surface/95 px-1 py-1 backdrop-blur md:hidden">
-        {NAV.slice(0, 5).map((item) => {
+        {MOBILE_PRIMARY.map((item) => {
           const active = isActive(pathname, item.href);
           const Icon = item.icon;
           return (
@@ -166,7 +171,49 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           );
         })}
+        <button
+          type="button"
+          onClick={() => setMoreOpen(true)}
+          aria-label="Más secciones"
+          className={cn(
+            "flex flex-1 flex-col items-center gap-1 rounded-md py-1.5 text-[10px]",
+            MOBILE_MORE.some((i) => isActive(pathname, i.href)) ? "text-accent" : "text-ink-muted",
+          )}
+        >
+          <MoreHorizontal className="h-5 w-5" strokeWidth={1.8} />
+          Más
+        </button>
       </nav>
+
+      {/* Hoja "Más" */}
+      {moreOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setMoreOpen(false)} aria-hidden />
+          <div className="absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-border bg-surface p-4 pb-7">
+            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-surface-2" />
+            <div className="grid grid-cols-3 gap-2">
+              {MOBILE_MORE.map((item) => {
+                const active = isActive(pathname, item.href);
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMoreOpen(false)}
+                    className={cn(
+                      "md-state flex flex-col items-center gap-1.5 rounded-2xl p-4 text-xs font-semibold",
+                      active ? "bg-accent-soft text-on-primary-container" : "text-ink-muted hover:bg-surface-2",
+                    )}
+                  >
+                    <Icon className="h-6 w-6" strokeWidth={active ? 2.2 : 1.8} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

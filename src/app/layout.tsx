@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppShell } from "@/components/nav/app-shell";
 import { SWRegister } from "@/components/pwa/sw-register";
 import { CloudInit } from "@/components/cloud/cloud-init";
+import { AmbientBackground } from "@/components/art/ambient-background";
 import { ToastProvider } from "@/components/ui/toast";
 
 const roboto = Roboto_Flex({
@@ -20,12 +21,12 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "RiseMath — Entrenamiento para el ingreso a Ingeniería UNLaM",
+  title: "Mateicos Matemáticos — Ingreso a Ingeniería UNLaM",
   description:
-    "Sistema de entrenamiento matemático gamificado para el ingreso a Ingeniería de la UNLaM.",
+    "Entrenamiento matemático gamificado para el ingreso a Ingeniería de la UNLaM.",
   manifest: "/manifest.webmanifest",
-  applicationName: "RiseMath",
-  appleWebApp: { capable: true, title: "RiseMath", statusBarStyle: "black-translucent" },
+  applicationName: "Mateicos Matemáticos",
+  appleWebApp: { capable: true, title: "Mateicos", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
       <body className="min-h-full">
+        <AmbientBackground />
         <ToastProvider>
           <AppShell>{children}</AppShell>
         </ToastProvider>

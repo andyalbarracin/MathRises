@@ -48,6 +48,8 @@ export interface LessonContent {
   };
   /** Términos técnicos con explicación simple, resaltados en el texto. */
   glossary?: GlossaryEntry[];
+  /** Materiales físicos recomendados (papel, regla, compás, transportador…). */
+  materials?: string[];
 }
 
 export const fraccionesLesson: LessonContent = {
@@ -89,6 +91,7 @@ export const fraccionesLesson: LessonContent = {
       },
     ],
   },
+  materials: ["papel y lápiz"],
   glossary: [
     { term: "fracción", plain: "Un pedazo de algo entero. Si partís una pizza en 4 y agarrás 1, comés 1/4 (un cuarto) de la pizza." },
     { term: "numerador", plain: "El número de arriba de la fracción. Dice cuántos pedazos tomás. En 3/4, el numerador es 3." },

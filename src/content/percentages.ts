@@ -51,6 +51,7 @@ export const porcentajesLesson: LessonContent = {
       },
     ],
   },
+  materials: ["papel y lápiz", "calculadora (opcional)"],
   glossary: [
     { term: "por ciento", plain: "Quiere decir 'de cada 100'. 20 por ciento (20%) es 20 de cada 100." },
     { term: "regla de tres", plain: "Un truco para encontrar un valor que falta cuando dos cantidades son proporcionales (si 3 cuestan 12, ¿cuánto cuestan 5?)." },
